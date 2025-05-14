@@ -1,10 +1,13 @@
 import { useAuth0 } from "@auth0/auth0-react"
 import { Navbar } from "../components/Navbar"
 import { Assets } from "../components/Assets";
+import { useGetUserWallet } from "../hooks/useGetUserWallet";
 
 export const Dashboard = () => {
 
     const { user, isLoading } = useAuth0();
+    const publicKey = useGetUserWallet();
+
 
     return (
         <>
@@ -15,7 +18,7 @@ export const Dashboard = () => {
                 <div className="pt-8 flex justify-center">
                     <div className="max-w-4xl bg-white rounded shadow w-full p-12">
                         <Greeting image={user?.picture} name={user?.name} />
-                        <Assets />
+                        <Assets publicKey={publicKey || ""} />
                     </div>
                 </div>
             }

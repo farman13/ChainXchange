@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { useGetUserWallet } from "../utils/useGetUserWallet";
 import { TertiaryButton } from "./Button";
+import { useTokenBalance } from "../hooks/useTokenBalance";
 
-function Assets() {
+function Assets({ publicKey }: {
+    publicKey: string
+}
+) {
 
     const [copied, setCopied] = useState(false);
-
-    const publicKey = useGetUserWallet();
+    console.log("AASSSPub", publicKey)
+    const { tokenBalances, loading } = useTokenBalance(publicKey);
 
     useEffect(() => {
         if (copied) {
@@ -25,8 +28,18 @@ function Assets() {
             <br />
 
             <div className="flex justify-between">
-                <div>
-
+                <div className="flex">
+                    <div className="text-5xl font-bold text-black">
+                        {loading ? "Loading......" :
+                            // @ts-ignore
+                            <div>
+                                ${tokenBalances?.totalUSDBalance}
+                            </div>
+                        }
+                    </div>
+                    <div className="text-slate-500 text-3xl flex flex-col font-semibold justify-end  pl-2">
+                        USD
+                    </div>
                 </div>
                 <div>
                     <TertiaryButton onClick={() => {

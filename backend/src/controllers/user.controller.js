@@ -79,7 +79,6 @@ const getUserWallet = async (req, res) => {
 const getUserBalance = async (req, res) => {
     const address = req.query.address;
 
-
     const tokenUSDPrice = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=USDT,USDC', {
         headers: {
             'X-CMC_PRO_API_KEY': process.env.CMC_API_KEY
@@ -102,9 +101,13 @@ const getUserBalance = async (req, res) => {
 
         })
     )
+    let totalUSDBalance = balances.reduce((acc, token) => {
+        return acc + (parseFloat(token.balance) * token.usdPrice);
+    }, 0);
 
     res.json({
-        balances
+        balances,
+        totalUSDBalance
     })
 }
 
