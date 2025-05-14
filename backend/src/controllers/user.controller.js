@@ -1,8 +1,11 @@
 import { EthWallet, InrWallet, User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { SUPPORTED_TOKENS } from "../utils/Constants.js";
 import { encrypt } from "../utils/EncryptDecrypt.js";
 import { generateEthWallet } from "../utils/generateWallet.js";
+import { getAccountBalance } from "../utils/getAccountBalance.js";
+import axios from 'axios';
 
 const signupUser = async (req, res) => {
     const { username, email, picture, sub } = req.body
@@ -73,4 +76,36 @@ const getUserWallet = async (req, res) => {
     )
 }
 
-export { signupUser, getUserWallet };
+const getUserBalance = async (req, res) => {
+    const address = req.query.address;
+
+
+    const tokenUSDPrice = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=USDT,USDC', {
+        headers: {
+            'X-CMC_PRO_API_KEY': process.env.CMC_API_KEY
+        }
+    })
+
+    const prices = {
+        USDC: tokenUSDPrice.data.data.USDC.quote.USD.price,
+        USDT: tokenUSDPrice.data.data.USDT.quote.USD.price
+    };
+
+    const balances = await Promise.all(
+        SUPPORTED_TOKENS.map(async (token) => {
+            const raw = await getAccountBalance(token, address);
+            return {
+                name: token.name,
+                balance: raw.toString(),
+                usdPrice: prices[token.name]
+            }
+
+        })
+    )
+
+    res.json({
+        balances
+    })
+}
+
+export { signupUser, getUserWallet, getUserBalance };
