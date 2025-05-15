@@ -36,3 +36,15 @@ export const TertiaryButton = ({ children, onClick }: {
     )
 }
 
+export const TabButton = ({ active, children, onClick }: {
+    children: React.ReactNode,
+    onClick: () => void,
+    active: boolean
+}) => {
+    return (
+        <>
+            <button type="button" onClick={onClick} className={`text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ${active ? "bg-blue-700" : "bg-blue-300"}`}
+            >{children}</button >
+        </>
+    )
+}

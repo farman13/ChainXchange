@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { TertiaryButton } from "./Button";
 import { useTokenBalance } from "../hooks/useTokenBalance";
+import { TokenList } from "./TokenList";
 
 function Assets({ publicKey }: {
     publicKey: string
@@ -27,16 +28,13 @@ function Assets({ publicKey }: {
             Account assets
             <br />
 
-            <div className="flex justify-between">
+            <div className="flex justify-between m-2">
                 <div className="flex">
-                    <div className="text-5xl font-bold text-black">
-                        {loading ? "Loading......" :
-                            // @ts-ignore
-                            <div>
-                                ${tokenBalances?.totalUSDBalance}
-                            </div>
-                        }
-                    </div>
+                    {loading ? "Loading......" :
+                        <div className="text-5xl font-bold text-black">
+                            ${tokenBalances?.totalUSDBalance}
+                        </div>
+                    }
                     <div className="text-slate-500 text-3xl flex flex-col font-semibold justify-end  pl-2">
                         USD
                     </div>
@@ -49,6 +47,9 @@ function Assets({ publicKey }: {
                     }
                     }>{copied ? "Copied" : "Your wallet address"}</TertiaryButton>
                 </div>
+            </div>
+            <div className="mt-15 bg-slate-100 p-4">
+                <TokenList tokens={tokenBalances?.tokens || []} />
             </div>
         </div>
     );

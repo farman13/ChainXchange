@@ -2,9 +2,24 @@ import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { useEffect, useState } from "react"
 
+export type TokenBalances = {
+    name: string,
+    balance: number,
+    usdPrice: number,
+    usdBalance: number,
+    image: string
+}
+
+export type TokenBalancesWithUSD = {
+    tokens: TokenBalances[],
+    totalUSDBalance: number
+}
+
 export const useTokenBalance = (publicKey: string) => {
 
-    const [tokenBalances, setTokenBalances] = useState();
+    const [tokenBalances, setTokenBalances] = useState<
+        TokenBalancesWithUSD
+    >();
     const [loading, setLoading] = useState(true);
     const { getAccessTokenSilently } = useAuth0();
 

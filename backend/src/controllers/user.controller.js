@@ -1,7 +1,7 @@
 import { EthWallet, InrWallet, User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { SUPPORTED_TOKENS } from "../utils/Constants.js";
+import { SUPPORTED_TOKENS } from "../constants.js";
 import { encrypt } from "../utils/EncryptDecrypt.js";
 import { generateEthWallet } from "../utils/generateWallet.js";
 import { getAccountBalance } from "../utils/getAccountBalance.js";
@@ -90,23 +90,25 @@ const getUserBalance = async (req, res) => {
         USDT: tokenUSDPrice.data.data.USDT.quote.USD.price
     };
 
-    const balances = await Promise.all(
+    const tokens = await Promise.all(
         SUPPORTED_TOKENS.map(async (token) => {
             const raw = await getAccountBalance(token, address);
             return {
                 name: token.name,
-                balance: raw.toString(),
-                usdPrice: prices[token.name]
+                balance: parseFloat(raw),
+                usdPrice: prices[token.name],
+                usdBalance: parseFloat(raw) * prices[token.name],
+                image: token.image
             }
 
         })
     )
-    let totalUSDBalance = balances.reduce((acc, token) => {
+    let totalUSDBalance = tokens.reduce((acc, token) => {
         return acc + (parseFloat(token.balance) * token.usdPrice);
     }, 0);
 
     res.json({
-        balances,
+        tokens,
         totalUSDBalance
     })
 }

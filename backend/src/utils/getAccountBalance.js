@@ -1,5 +1,5 @@
 import { Contract, formatEther } from "ethers"
-import { connection } from "./Constants.js"
+import { connection } from "../constants.js"
 import { abi } from "../ABI/tokenABI.js"
 
 
