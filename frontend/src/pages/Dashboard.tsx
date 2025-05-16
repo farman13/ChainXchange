@@ -4,6 +4,7 @@ import { Assets } from "../components/Assets";
 import { useGetUserWallet } from "../hooks/useGetUserWallet";
 import { TabButton } from "../components/Button";
 import { useState } from "react";
+import { SwapToken } from "../components/SwapToken";
 
 type Tab = "tokens" | "send" | "add_funds" | "swap" | "withdraw"
 
@@ -39,10 +40,8 @@ export const Dashboard = () => {
                                 }}>{tab.name}</TabButton>)
                             }
                         </div>
-                        {<div className={`${selectedTab == "tokens" ? "visible" : "hidden"}`}>
-                            <Assets publicKey={publicKey || ""} />
-                        </div>
-                        }
+                        <div className={`${selectedTab == "tokens" ? "visible" : "hidden"}`}><Assets publicKey={publicKey || ""} /></div>
+                        <div className={`${selectedTab == "swap" ? "visible" : "hidden"}`}><SwapToken publicKey={publicKey || ""} /></div>
                     </div>
                 </div>
             }
