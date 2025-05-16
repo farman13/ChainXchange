@@ -10,7 +10,9 @@ app.use(cors({
 }))
 
 import { userRouter } from "./routes/user.route.js";
+import { tokenRouter } from "./routes/token.route.js";
 
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/token", tokenRouter);
 
 export { app };

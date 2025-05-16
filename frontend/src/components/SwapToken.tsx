@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { TokenBalances, useTokenBalance } from "../hooks/useTokenBalance";
 import { SwapRow } from "./SwapRow";
 import { SwapIcon } from "./SwapIcon";
+import axios from "axios";
 
 const SwapToken = ({ publicKey }:
     { publicKey: string }
@@ -12,6 +13,7 @@ const SwapToken = ({ publicKey }:
     const [baseAmount, setBaseAmount] = useState<string>();
     const [quoteAmount, setQuoteAmount] = useState<string>();
 
+
     const { tokenBalances, loading } = useTokenBalance(publicKey);
 
     useEffect(() => {
@@ -21,10 +23,16 @@ const SwapToken = ({ publicKey }:
 
     useEffect(() => {
         if (!baseAmount) {
-            return
+            setQuoteAmount("0");
+            return;
         }
 
-        // fetch the quote fro quote Asset
+        const fetchQuote = async () => {
+            const response = await axios.get(`http://localhost:3000/api/v1/token/quote?srctoken=${baseAsset?.name}&desttoken=${quoteAsset?.name}&amount=${baseAmount}`)
+            setQuoteAmount(response.data.data);
+        }
+
+        fetchQuote();
 
     }, [baseAmount, baseAsset, quoteAsset])
 
@@ -68,6 +76,7 @@ const SwapToken = ({ publicKey }:
             topBorderEnabled={false}
             bottomBorderEnabled={true}
             amount={quoteAmount}
+            inputDisable={true}
         />
     </div>
 }

@@ -2,7 +2,7 @@ import { ReactNode } from "react"
 import { TokenBalances } from "../hooks/useTokenBalance"
 import { AssestSelector } from "./AssestSelector"
 
-const SwapRow = ({ onSelect, selectedToken, allTokens, title, subtitle, topBorderEnabled, bottomBorderEnabled, amount, onChangeAmount }:
+const SwapRow = ({ onSelect, selectedToken, allTokens, title, subtitle, topBorderEnabled, bottomBorderEnabled, amount, onChangeAmount, inputDisable }:
     {
         onSelect: (assets: TokenBalances) => void,
         selectedToken: TokenBalances | undefined,
@@ -13,6 +13,7 @@ const SwapRow = ({ onSelect, selectedToken, allTokens, title, subtitle, topBorde
         bottomBorderEnabled: boolean,
         amount?: string,
         onChangeAmount?: (amount: string) => void
+        inputDisable?: boolean
     }
 
 ) => {
@@ -25,6 +26,7 @@ const SwapRow = ({ onSelect, selectedToken, allTokens, title, subtitle, topBorde
         </div>
         <div>
             <input
+                disabled={inputDisable}
                 type="text"
                 placeholder="0"
                 className="outline-none text-4xl p-4"
