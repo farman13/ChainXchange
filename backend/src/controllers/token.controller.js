@@ -19,15 +19,15 @@ export const getQuote = async (req, res) => {
         params: {
             srcToken: srctoken.ETHAddress,
             destToken: desttoken.ETHAddress,
-            amount: amount * (10 ** srctoken.decimals),
-            srcDecimals: srctoken.decimals,
-            destDecimals: desttoken.decimals,
+            amount: amount * (10 ** 6),  //srctoken.decimals
+            srcDecimals: 6, //srctoken.decimals
+            destDecimals: 6, //desttoken.decimals
             side: 'SELL',
             network: 1
         }
     });
 
-    const destAmount = (response.data.priceRoute.destAmount / (10 ** desttoken.decimals)).toFixed(4)
+    const destAmount = (response.data.priceRoute.destAmount / (10 ** 6)).toFixed(4) //desttoken.decimals
 
 
     return res.status(200).json(

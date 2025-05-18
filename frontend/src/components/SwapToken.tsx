@@ -3,6 +3,8 @@ import { TokenBalances, useTokenBalance } from "../hooks/useTokenBalance";
 import { SwapRow } from "./SwapRow";
 import { SwapIcon } from "./SwapIcon";
 import axios from "axios";
+import { PrimaryButton } from "./Button";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const SwapToken = ({ publicKey }:
     { publicKey: string }
@@ -15,6 +17,7 @@ const SwapToken = ({ publicKey }:
 
 
     const { tokenBalances, loading } = useTokenBalance(publicKey);
+    const { user, getAccessTokenSilently } = useAuth0();
 
     useEffect(() => {
         setBaseAsset(tokenBalances?.tokens[0])
@@ -38,6 +41,27 @@ const SwapToken = ({ publicKey }:
 
     console.log("from swaptoken : token", tokenBalances);
 
+    const initiateSwap = async () => {
+
+        const token = await getAccessTokenSilently();
+        const sub = user?.sub;
+
+        const response = await axios.post("http://localhost:3000/api/v1/user/swap", {
+            baseAsset,
+            quoteAsset,
+            baseAmount,
+            sub
+        },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            })
+        console.log(response.data);
+        setBaseAmount("0");
+        alert(`tokens swapped ${response.data}`)
+    }
+
     return <div className="p-12">
         <div className="text-2xl font-bold pb-4">
             Swap Tokens
@@ -45,6 +69,7 @@ const SwapToken = ({ publicKey }:
         <SwapRow
             onSelect={(asset: TokenBalances) => {
                 setBaseAsset(asset)
+                console.log("ssesststst", asset);
             }}
             selectedToken={baseAsset}
             allTokens={tokenBalances?.tokens}
@@ -78,6 +103,9 @@ const SwapToken = ({ publicKey }:
             amount={quoteAmount}
             inputDisable={true}
         />
+        <div className="flex justify-end mt-3">
+            <PrimaryButton onClick={initiateSwap} >swap</PrimaryButton>
+        </div>
     </div>
 }
 

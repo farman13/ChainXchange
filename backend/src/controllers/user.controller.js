@@ -6,6 +6,7 @@ import { encrypt } from "../utils/EncryptDecrypt.js";
 import { generateEthWallet } from "../utils/generateWallet.js";
 import { getAccountBalance } from "../utils/getAccountBalance.js";
 import axios from 'axios';
+import { SwapToken } from "../utils/SwapToken.js";
 
 const signupUser = async (req, res) => {
     const { username, email, picture, sub } = req.body
@@ -98,7 +99,8 @@ const getUserBalance = async (req, res) => {
                 balance: parseFloat(raw),
                 usdPrice: prices[token.name],
                 usdBalance: parseFloat(raw) * prices[token.name],
-                image: token.image
+                image: token.image,
+                address: token.address
             }
 
         })
@@ -113,4 +115,15 @@ const getUserBalance = async (req, res) => {
     })
 }
 
-export { signupUser, getUserWallet, getUserBalance };
+const swapTokens = async (req, res) => {
+
+    const { baseAsset, quoteAsset, baseAmount, sub } = req.body;
+
+    const hash = await SwapToken(baseAsset, quoteAsset, baseAmount);
+
+    res.json({
+        hash
+    })
+}
+
+export { signupUser, getUserWallet, getUserBalance, swapTokens };
