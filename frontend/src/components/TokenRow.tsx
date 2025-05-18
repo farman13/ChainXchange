@@ -13,17 +13,17 @@ export const TokenRow = ({ token }: { token: TokenBalances }) => {
                     {token.name}
                 </div>
                 <div className="font-slim">
-                    1 {token.name} = ~${token.usdPrice}
+                    1 {token.name} = ~${token.usdPrice.toFixed(6)}
                 </div>
             </div>
         </div>
         <div>
             <div>
                 <div className="font-bold">
-                    {token.usdBalance}
+                    {token.balance.toFixed(2)}
                 </div>
                 <div className="font-slim">
-                    {token.balance}
+                    ~${token.usdBalance.toFixed(1)}
                 </div>
             </div>
         </div>

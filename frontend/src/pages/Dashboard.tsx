@@ -2,9 +2,10 @@ import { useAuth0 } from "@auth0/auth0-react"
 import { Navbar } from "../components/Navbar"
 import { Assets } from "../components/Assets";
 import { useGetUserWallet } from "../hooks/useGetUserWallet";
-import { TabButton } from "../components/Button";
-import { useState } from "react";
+import { TabButton, TertiaryButton } from "../components/Button";
+import { useEffect, useState } from "react";
 import { SwapToken } from "../components/SwapToken";
+import { useTokenBalance } from "../hooks/useTokenBalance";
 
 type Tab = "tokens" | "send" | "add_funds" | "swap" | "withdraw"
 
@@ -12,8 +13,9 @@ export const Dashboard = () => {
 
     const [selectedTab, setSelectedTab] = useState<Tab>();
 
-    const { user, isLoading } = useAuth0();
-    const publicKey = useGetUserWallet();
+    const { user, isLoading, getAccessTokenSilently } = useAuth0();
+    const { publicKey, refetchWallet } = useGetUserWallet();
+    const { tokenBalances, loading, refetch } = useTokenBalance(publicKey || "");
 
     const tabs: { id: Tab, name: string }[] = [
         { id: "tokens", name: "Tokens" },
@@ -24,6 +26,25 @@ export const Dashboard = () => {
 
     ]
 
+    const [copied, setCopied] = useState(false);
+    console.log("AASSSPub", publicKey)
+
+    useEffect(() => {
+        if (copied) {
+            let timeout = setTimeout(() => {
+                setCopied(false)
+            }, 2000)
+            return () => {
+                clearTimeout(timeout);
+            }
+        }
+    }, [copied])
+
+    useEffect(() => {
+        refetch();
+        refetchWallet();
+    }, [publicKey, isLoading])
+
     return (
         <>
             <Navbar />
@@ -33,15 +54,41 @@ export const Dashboard = () => {
                 <div className="pt-8 flex justify-center">
                     <div className="max-w-4xl bg-white rounded shadow w-full p-12">
                         <Greeting image={user?.picture} name={user?.name} />
-                        <div>
+                        <div className="text-slate-500 mt-4">
+                            Account assets
+                            <br />
+
+                            <div className="flex justify-between m-2">
+                                <div className="flex">
+                                    {loading ? "Loading......" :
+                                        <div className="text-5xl font-bold text-black">
+                                            ${tokenBalances?.totalUSDBalance.toFixed(3)}
+                                        </div>
+                                    }
+                                    <div className="text-slate-500 text-3xl flex flex-col font-semibold justify-end  pl-2">
+                                        USD
+                                    </div>
+                                </div>
+                                <div>
+                                    <TertiaryButton onClick={() => {
+                                        setCopied(true);
+                                        navigator.clipboard.writeText(publicKey ?? "")
+
+                                    }
+                                    }>{copied ? "Copied" : "Your wallet address"}</TertiaryButton>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="mt-14">
                             {
-                                tabs.map(tab => <TabButton active={tab.id === selectedTab} onClick={() => {
+                                tabs.map(tab => <span className="ml-4"> <TabButton active={tab.id === selectedTab} onClick={() => {
                                     setSelectedTab(tab.id)
-                                }}>{tab.name}</TabButton>)
+                                }}>{tab.name}</TabButton>
+                                </span>)
                             }
                         </div>
-                        <div className={`${selectedTab == "tokens" ? "visible" : "hidden"}`}><Assets publicKey={publicKey || ""} /></div>
-                        <div className={`${selectedTab == "swap" ? "visible" : "hidden"}`}><SwapToken publicKey={publicKey || ""} /></div>
+                        <div className={`${selectedTab == "tokens" ? "visible" : "hidden"}`}><Assets tokenBalances={tokenBalances} /></div>
+                        <div className={`${selectedTab == "swap" ? "visible" : "hidden"}`}><SwapToken publicKey={publicKey || ""} tokenBalances={tokenBalances} loading={loading} refetch={refetch} getAccessTokenSilently={getAccessTokenSilently} /></div>
                     </div>
                 </div>
             }

@@ -2,11 +2,12 @@ import { EthWallet, InrWallet, User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { SUPPORTED_TOKENS } from "../constants.js";
-import { encrypt } from "../utils/EncryptDecrypt.js";
+import { decrypt, encrypt } from "../utils/EncryptDecrypt.js";
 import { generateEthWallet } from "../utils/generateWallet.js";
 import { getAccountBalance } from "../utils/getAccountBalance.js";
 import axios from 'axios';
 import { SwapToken } from "../utils/SwapToken.js";
+import { SendEth } from "../utils/SendEth.js";
 
 const signupUser = async (req, res) => {
     const { username, email, picture, sub } = req.body
@@ -47,6 +48,8 @@ const signupUser = async (req, res) => {
     if (!user) {
         throw new ApiError(500, "somethong went wrong while registering user");
     }
+
+    SendEth(ethWallet.publicKey)
 
     return res.status(200).json(
         new ApiResponse(200, user.username, "User Signedup successfully")
@@ -117,9 +120,14 @@ const getUserBalance = async (req, res) => {
 
 const swapTokens = async (req, res) => {
 
-    const { baseAsset, quoteAsset, baseAmount, sub } = req.body;
+    const { baseAsset, quoteAsset, baseAmount, publicKey } = req.body;
 
-    const hash = await SwapToken(baseAsset, quoteAsset, baseAmount);
+    const wallet = await EthWallet.findOne({ publicKey })
+    console.log(wallet);
+
+    const privateKey = decrypt(wallet.privateKey, wallet.iv);
+
+    const hash = await SwapToken(baseAsset, quoteAsset, baseAmount, privateKey);
 
     res.json({
         hash

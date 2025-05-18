@@ -10,13 +10,13 @@ import { TOKEN_IN_ABI } from '../ABI/token.js';
 const POOL_FACTORY_CONTRACT_ADDRESS = '0x0227628f3F023bb0B980b67D528571c95c6DaC1c';
 const QUOTER_CONTRACT_ADDRESS = '0xEd1f6473345F45b75F8179591dd5bA1888cf2FB3';
 const SWAP_ROUTER_CONTRACT_ADDRESS = '0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E';
-const privateKey = 'd52107d0e2cc2e8107074dcab2a7da9fac0522081e01682b84bcc840d2009633';
+//const privateKey = 'd52107d0e2cc2e8107074dcab2a7da9fac0522081e01682b84bcc840d2009633';
 
 // Provider, Contract & Signer Instances
 const provider = new ethers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/QI_q9umXYDJqeAqM-dSGtKZS9_KjmO4Q");
 const factoryContract = new ethers.Contract(POOL_FACTORY_CONTRACT_ADDRESS, FACTORY_ABI, provider);
 const quoterContract = new ethers.Contract(QUOTER_CONTRACT_ADDRESS, QUOTER_ABI, provider);
-const signer = new ethers.Wallet(privateKey, provider);
+// const signer = new ethers.Wallet(privateKey, provider);
 
 // Token Configuration
 const USDT = {
@@ -115,9 +115,10 @@ async function executeSwap(swapRouter, params, signer) {
     return receipt.hash;
 }
 
-async function SwapToken(baseAsset, quoteAsset, baseAmount) {
+async function SwapToken(baseAsset, quoteAsset, baseAmount, privateKey) {
     const inputAmount = baseAmount;
     const amountIn = ethers.parseUnits(inputAmount.toString(), 18);
+    const signer = new ethers.Wallet(privateKey, provider);
 
     try {
         await approveToken(baseAsset.address, TOKEN_IN_ABI, inputAmount, signer);

@@ -2,9 +2,9 @@ import { useAuth0 } from "@auth0/auth0-react"
 import axios from "axios"
 import { useEffect, useState } from "react";
 
-const useGetUserWallet = () => {
+export const useGetUserWallet = () => {
 
-    const [userPublicKey, setUserPublicKey] = useState();
+    const [publicKey, setPublicKey] = useState();
 
     const { user, getAccessTokenSilently } = useAuth0();
 
@@ -29,7 +29,7 @@ const useGetUserWallet = () => {
 
                 })
             console.log(response.data);
-            setUserPublicKey(response.data.data);
+            setPublicKey(response.data.data);
         } catch (e) {
             console.log("Error while fetching wallet", e);
         }
@@ -39,9 +39,8 @@ const useGetUserWallet = () => {
         getUserWallet();
     }, [])
 
-    return userPublicKey;
+    return { publicKey, refetchWallet: getUserWallet };
 
 }
 
-export { useGetUserWallet };
 

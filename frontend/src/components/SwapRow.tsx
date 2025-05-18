@@ -21,7 +21,9 @@ const SwapRow = ({ onSelect, selectedToken, allTokens, title, subtitle, topBorde
     return <div className={`border flex justify-between p-6 ${topBorderEnabled ? "rounded-t-xl" : ""} ${bottomBorderEnabled ? "rounded-b-xl" : ""}`}>
         <div>
             <div className="font-semibold">{title}</div>
-            <AssestSelector selectedToken={selectedToken} allTokens={allTokens} onSelect={onSelect} />
+            <div className="w-22">
+                <AssestSelector selectedToken={selectedToken} allTokens={allTokens} onSelect={onSelect} />
+            </div>
             {subtitle}
         </div>
         <div>

@@ -1,28 +1,31 @@
 import { useEffect, useState } from "react"
-import { TokenBalances, useTokenBalance } from "../hooks/useTokenBalance";
+import { TokenBalances, TokenBalancesWithUSD } from "../hooks/useTokenBalance";
 import { SwapRow } from "./SwapRow";
 import { SwapIcon } from "./SwapIcon";
 import axios from "axios";
 import { PrimaryButton } from "./Button";
-import { useAuth0 } from "@auth0/auth0-react";
+import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
 
-const SwapToken = ({ publicKey }:
-    { publicKey: string }
+const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenSilently }:
+    {
+        publicKey: string,
+        tokenBalances: TokenBalancesWithUSD | undefined,
+        loading: boolean,
+        refetch: () => void,
+        getAccessTokenSilently: (options?: GetTokenSilentlyOptions) => Promise<string>;
+    }
 ) => {
 
     const [baseAsset, setBaseAsset] = useState<TokenBalances>();
     const [quoteAsset, setQuoteAsset] = useState<TokenBalances>();
     const [baseAmount, setBaseAmount] = useState<string>();
     const [quoteAmount, setQuoteAmount] = useState<string>();
-
-
-    const { tokenBalances, loading } = useTokenBalance(publicKey);
-    const { user, getAccessTokenSilently } = useAuth0();
+    const [isSwapping, setisSwapping] = useState<boolean>(false);
 
     useEffect(() => {
         setBaseAsset(tokenBalances?.tokens[0])
         setQuoteAsset(tokenBalances?.tokens[1])
-    }, [loading])
+    }, [loading, tokenBalances])
 
     useEffect(() => {
         if (!baseAmount) {
@@ -43,14 +46,14 @@ const SwapToken = ({ publicKey }:
 
     const initiateSwap = async () => {
 
+        setisSwapping(true)
         const token = await getAccessTokenSilently();
-        const sub = user?.sub;
 
         const response = await axios.post("http://localhost:3000/api/v1/user/swap", {
             baseAsset,
             quoteAsset,
             baseAmount,
-            sub
+            publicKey
         },
             {
                 headers: {
@@ -59,7 +62,11 @@ const SwapToken = ({ publicKey }:
             })
         console.log(response.data);
         setBaseAmount("0");
+        setQuoteAmount("0");
+        setisSwapping(false);
         alert(`tokens swapped ${response.data}`)
+        refetch();
+
     }
 
     return <div className="p-12">
@@ -104,7 +111,20 @@ const SwapToken = ({ publicKey }:
             inputDisable={true}
         />
         <div className="flex justify-end mt-3">
-            <PrimaryButton onClick={initiateSwap} >swap</PrimaryButton>
+            <PrimaryButton onClick={initiateSwap} >
+                {isSwapping ? (
+                    <div className="flex items-center gap-2">
+                        <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        Swapping...
+                    </div>
+                ) : (
+                    "Swap"
+                )}
+            </PrimaryButton>
+
         </div>
     </div>
 }

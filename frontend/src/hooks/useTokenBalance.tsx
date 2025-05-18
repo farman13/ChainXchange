@@ -42,5 +42,5 @@ export const useTokenBalance = (publicKey: string) => {
         fetchToken();
     }, [publicKey])
 
-    return { tokenBalances, loading };
+    return { tokenBalances, loading, refetch: fetchToken };
 }
