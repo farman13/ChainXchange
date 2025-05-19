@@ -19,7 +19,7 @@ export const TokenRow = ({ token }: { token: TokenBalances }) => {
         </div>
         <div>
             <div>
-                <div className="font-bold">
+                <div className="font-bold ml-3">
                     {token.balance.toFixed(2)}
                 </div>
                 <div className="font-slim">

@@ -20,6 +20,17 @@ export const getQuote = async (req, res) => {
     console.log(srctoken);
     console.log(desttoken);
 
+    if (!srctoken || !desttoken) {
+        throw new ApiError(400, "Unsupported token selected.");
+    }
+
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
+        res.json({
+            message: "Invalid amount"
+        })
+        throw new ApiError(400, "Invalid amount provided.");
+    }
+
     const amountIn = ethers.parseUnits(amount.toString(), 18);
     const quoteAmount = await quoteAndLogSwap(quoterContract, 3000, user, amountIn, srctoken, desttoken)
     console.log("quote amount by uniswap ", quoteAmount)

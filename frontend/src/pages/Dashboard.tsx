@@ -23,7 +23,6 @@ export const Dashboard = () => {
         { id: "add_funds", name: "Add funds" },
         { id: "withdraw", name: "Withdraw" },
         { id: "swap", name: "Swap" },
-
     ]
 
     const [copied, setCopied] = useState(false);
@@ -52,7 +51,7 @@ export const Dashboard = () => {
                 <div>Loading....</div>
                 :
                 <div className="pt-8 flex justify-center">
-                    <div className="max-w-4xl bg-white rounded shadow w-full p-12">
+                    <div className="max-w-2xl bg-white rounded-2xl shadow-lg w-full p-10 border border-gray-200">
                         <Greeting image={user?.picture} name={user?.name} />
                         <div className="text-slate-500 mt-4">
                             Account assets
@@ -65,7 +64,7 @@ export const Dashboard = () => {
                                             ${tokenBalances?.totalUSDBalance.toFixed(3)}
                                         </div>
                                     }
-                                    <div className="text-slate-500 text-3xl flex flex-col font-semibold justify-end  pl-2">
+                                    <div className="text-slate-500 text-3xl flex flex-col font-semibold justify-end pl-2">
                                         USD
                                     </div>
                                 </div>
@@ -73,22 +72,27 @@ export const Dashboard = () => {
                                     <TertiaryButton onClick={() => {
                                         setCopied(true);
                                         navigator.clipboard.writeText(publicKey ?? "")
-
-                                    }
-                                    }>{copied ? "Copied" : "Your wallet address"}</TertiaryButton>
+                                    }}>
+                                        {copied ? "Copied" : "Your wallet address"}
+                                    </TertiaryButton>
                                 </div>
                             </div>
                         </div>
                         <div className="mt-14">
                             {
-                                tabs.map(tab => <span className="ml-4"> <TabButton active={tab.id === selectedTab} onClick={() => {
-                                    setSelectedTab(tab.id)
-                                }}>{tab.name}</TabButton>
+                                tabs.map(tab => <span className="ml-4" key={tab.id}>
+                                    <TabButton active={tab.id === selectedTab} onClick={() => {
+                                        setSelectedTab(tab.id)
+                                    }}>{tab.name}</TabButton>
                                 </span>)
                             }
                         </div>
-                        <div className={`${selectedTab == "tokens" ? "visible" : "hidden"}`}><Assets tokenBalances={tokenBalances} /></div>
-                        <div className={`${selectedTab == "swap" ? "visible" : "hidden"}`}><SwapToken publicKey={publicKey || ""} tokenBalances={tokenBalances} loading={loading} refetch={refetch} getAccessTokenSilently={getAccessTokenSilently} /></div>
+                        <div className={`${selectedTab == "tokens" ? "visible" : "hidden"}`}>
+                            <Assets tokenBalances={tokenBalances} />
+                        </div>
+                        <div className={`${selectedTab == "swap" ? "visible" : "hidden"}`}>
+                            <SwapToken publicKey={publicKey || ""} tokenBalances={tokenBalances} loading={loading} refetch={refetch} getAccessTokenSilently={getAccessTokenSilently} />
+                        </div>
                     </div>
                 </div>
             }
@@ -102,7 +106,7 @@ function Greeting({ image, name }: {
 
     console.log(name, image);
     return <div className="flex mb-10">
-        <img src={image} className="w-13 h-13 rounded-full mr-4" alt="icon" />
+        <img src={image} className="w-14 h-14 rounded-full mr-4 border-2 border-gray-300" alt="icon" />
         <div className="text-xl font-semibold flex flex-col justify-center">
             Welcome back, {name}
         </div>

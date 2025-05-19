@@ -21,26 +21,36 @@ const SwapRow = ({ onSelect, selectedToken, allTokens, title, subtitle, topBorde
         onChangeAmount?.(val);
     }, 600);
 
-    return <div className={`border flex justify-between p-6 ${topBorderEnabled ? "rounded-t-xl" : ""} ${bottomBorderEnabled ? "rounded-b-xl" : ""}`}>
-        <div>
-            <div className="font-semibold">{title}</div>
-            <div className="w-22">
-                <AssestSelector selectedToken={selectedToken} allTokens={allTokens} onSelect={onSelect} />
+    return (
+        <div
+            className={`bg-white flex justify-between items-center px-6 py-5 shadow-sm border ${topBorderEnabled ? "rounded-t-2xl" : ""
+                } ${bottomBorderEnabled ? "rounded-b-2xl" : ""}`}
+        >
+            <div className="flex flex-col gap-2">
+                <div className="text-sm font-medium text-slate-600">{title}</div>
+                <div className="w-28">
+                    <AssestSelector
+                        selectedToken={selectedToken}
+                        allTokens={allTokens}
+                        onSelect={onSelect}
+                    />
+                </div>
+                {subtitle && <div className="text-xs text-slate-500">{subtitle}</div>}
             </div>
-            {subtitle}
+
+            <div>
+                <input
+                    disabled={inputDisable}
+                    type="text"
+                    placeholder="0"
+                    className="text-right text-3xl font-semibold text-slate-800 bg-transparent outline-none w-40"
+                    value={amount}
+                    onChange={(e) => debounce(e.target.value)}
+                />
+            </div>
         </div>
-        <div>
-            <input
-                disabled={inputDisable}
-                type="text"
-                placeholder="0"
-                className="outline-none text-4xl p-4 text-right"
-                value={amount}
-                //  onChange={(e) => onChangeAmount && onChangeAmount(e.target.value)}
-                onChange={(e) => debounce(e.target.value)}
-            />
-        </div>
-    </div>
+    );
+
 }
 
 export { SwapRow }

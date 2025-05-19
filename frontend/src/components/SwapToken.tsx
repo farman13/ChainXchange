@@ -61,10 +61,10 @@ const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenS
                 },
             })
         console.log(response.data);
-        setBaseAmount("0");
         setQuoteAmount("0");
+        setBaseAmount("0");
         setisSwapping(false);
-        alert(`tokens swapped ${response.data}`)
+        alert(`tokens swapped`)
         refetch();
 
     }
@@ -84,7 +84,7 @@ const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenS
             topBorderEnabled={true}
             bottomBorderEnabled={false}
             subtitle={<div className="text-slate-500 text-sm">{`Current balance : ${baseAsset?.balance.toFixed(2)} ${baseAsset?.name}`}</div>}
-            // amount={baseAmount}
+            amount={baseAmount}
             onChangeAmount={(value: string) => setBaseAmount(value)}
         />
 
