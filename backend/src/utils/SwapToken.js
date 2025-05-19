@@ -7,35 +7,17 @@ import { TOKEN_IN_ABI } from '../ABI/token.js';
 
 
 // Deployment Addresses
-const POOL_FACTORY_CONTRACT_ADDRESS = '0x0227628f3F023bb0B980b67D528571c95c6DaC1c';
-const QUOTER_CONTRACT_ADDRESS = '0xEd1f6473345F45b75F8179591dd5bA1888cf2FB3';
-const SWAP_ROUTER_CONTRACT_ADDRESS = '0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E';
-//const privateKey = 'd52107d0e2cc2e8107074dcab2a7da9fac0522081e01682b84bcc840d2009633';
+const POOL_FACTORY_CONTRACT_ADDRESS = process.env.POOL_FACTORY_CONTRACT_ADDRESS;
+const QUOTER_CONTRACT_ADDRESS = process.env.QUOTER_CONTRACT_ADDRESS;
+const SWAP_ROUTER_CONTRACT_ADDRESS = process.env.SWAP_ROUTER_CONTRACT_ADDRESS;
 
 // Provider, Contract & Signer Instances
-const provider = new ethers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/QI_q9umXYDJqeAqM-dSGtKZS9_KjmO4Q");
+const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_PROVIDER);
 const factoryContract = new ethers.Contract(POOL_FACTORY_CONTRACT_ADDRESS, FACTORY_ABI, provider);
-const quoterContract = new ethers.Contract(QUOTER_CONTRACT_ADDRESS, QUOTER_ABI, provider);
+export const quoterContract = new ethers.Contract(QUOTER_CONTRACT_ADDRESS, QUOTER_ABI, provider);
 // const signer = new ethers.Wallet(privateKey, provider);
 
-// Token Configuration
-const USDT = {
-    chainId: 11155111,
-    address: '0x65D96C8e428595a174ad6926fFfB4E2365820918',
-    decimals: 18,
-    name: 'USDT',
-    isToken: true,
-    isNative: false,
-};
 
-const USDC = {
-    chainId: 11155111,
-    address: '0x46e75BB06dDF1DCA6A9C25AF8a1557aEe07c5616',
-    decimals: 18,
-    name: 'USDC',
-    isToken: true,
-    isNative: false,
-};
 
 async function approveToken(tokenAddress, tokenABI, amount, wallet) {
     try {
@@ -76,7 +58,7 @@ async function getPoolInfo(factoryContract, tokenIn, tokenOut) {
     return { poolContract, token0, token1, fee };
 }
 
-async function quoteAndLogSwap(quoterContract, fee, signer, amountIn, baseAsset, quoteAsset) {
+export async function quoteAndLogSwap(quoterContract, fee, signer, amountIn, baseAsset, quoteAsset) {
     const quotedAmountOut = await quoterContract.quoteExactInputSingle.staticCall({
         tokenIn: baseAsset.address,
         tokenOut: quoteAsset.address,
@@ -86,6 +68,7 @@ async function quoteAndLogSwap(quoterContract, fee, signer, amountIn, baseAsset,
         amountIn: amountIn,
         sqrtPriceLimitX96: 0,
     });
+    console.log("FSKJDFSJDF", amountIn, baseAsset, quoteAsset);
     console.log(`-------------------------------`);
     console.log("2 quoterAmount", quotedAmountOut)
     console.log(`Token Swap will result in: ${ethers.formatUnits(quotedAmountOut[0].toString(), quoteAsset.decimals)} ${quoteAsset.name} for ${ethers.formatEther(amountIn)} ${baseAsset.name}`);
@@ -124,7 +107,7 @@ async function SwapToken(baseAsset, quoteAsset, baseAmount, privateKey) {
         await approveToken(baseAsset.address, TOKEN_IN_ABI, inputAmount, signer);
         const { poolContract, fee } = await getPoolInfo(factoryContract, baseAsset, quoteAsset);
         console.log(`-------------------------------`);
-        console.log(`Fetching Quote for: ${baseAsset.name} to ${quoteAsset.name}`);
+        console.log(`Fetching Quote for: ${baseAsset.name} to ${quoteAsset.name} and ${fee}`);
         console.log(`-------------------------------`);
         console.log(`Swap Amount: ${ethers.formatEther(amountIn)}`);
 

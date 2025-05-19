@@ -34,7 +34,7 @@ const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenS
         }
 
         const fetchQuote = async () => {
-            const response = await axios.get(`http://localhost:3000/api/v1/token/quote?srctoken=${baseAsset?.name}&desttoken=${quoteAsset?.name}&amount=${baseAmount}`)
+            const response = await axios.get(`http://localhost:3000/api/v1/token/quote?srctoken=${baseAsset?.name}&desttoken=${quoteAsset?.name}&amount=${baseAmount}&publicKey=${publicKey}`)
             setQuoteAmount(response.data.data);
         }
 
@@ -84,7 +84,7 @@ const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenS
             topBorderEnabled={true}
             bottomBorderEnabled={false}
             subtitle={<div className="text-slate-500 text-sm">{`Current balance : ${baseAsset?.balance.toFixed(2)} ${baseAsset?.name}`}</div>}
-            amount={baseAmount}
+            // amount={baseAmount}
             onChangeAmount={(value: string) => setBaseAmount(value)}
         />
 
@@ -109,6 +109,7 @@ const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenS
             bottomBorderEnabled={true}
             amount={quoteAmount}
             inputDisable={true}
+            subtitle={<div className="text-slate-500 text-sm">{`Current balance : ${quoteAsset?.balance.toFixed(2)} ${quoteAsset?.name}`}</div>}
         />
         <div className="flex justify-end mt-3">
             <PrimaryButton onClick={initiateSwap} >
