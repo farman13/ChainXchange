@@ -2,14 +2,14 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { ArrowIcon } from "./ArrowIcon"
 import WalletModal from "./WalletModal";
 
-const AddFundOptions = ({ publicKey, setExternalAccountOption }: {
+const AddFundOptions = ({ publicKey, setExternalAccount }: {
     publicKey: string,
-    setExternalAccountOption: Dispatch<SetStateAction<boolean>>
+    setExternalAccount: Dispatch<SetStateAction<boolean>>
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return <div className="m-4">
-        <div className="flex justify-between text-slate-600 mt-4 p-3 border border-gray-400 bg-white cursor-pointer hover:bg-slate-100" onClick={() => setExternalAccountOption(true)}>
+        <div className="flex justify-between text-slate-600 mt-4 p-3 border border-gray-400 bg-white cursor-pointer hover:bg-slate-100" onClick={() => setExternalAccount(true)}>
             <div className="text-xl">
                 From External Account/Wallet
                 <div className="text-sm text-slate-400">
