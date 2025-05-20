@@ -4,9 +4,10 @@ import { AddFundOptions } from "./AddFundOptions";
 import { ConnectWalletAccount } from "./ConnectWalletAccount";
 import { DepositAsset } from "./DepositAsset";
 
-const AddFund = ({ tokenBalances, publicKey }: {
+const AddFund = ({ tokenBalances, publicKey, refetch }: {
     tokenBalances: TokenBalancesWithUSD | undefined,
-    publicKey: string
+    publicKey: string,
+    refetch: () => void,
 }) => {
 
     const [externalAccount, setExternalAccount] = useState<boolean>(false)
@@ -32,9 +33,9 @@ const AddFund = ({ tokenBalances, publicKey }: {
                 :
                 <div>
                     <div className="text-2xl text-slate-600 font-bold p-3 pt-4">
-                        Deposit from External Account/Wallet
+                        Deposit via connected wallet
                     </div>
-                    <DepositAsset setDepositAmountModal={setDepositAmountModal} />
+                    <DepositAsset publicKey={publicKey} setDepositAmountModal={setDepositAmountModal} tokenBalances={tokenBalances} refetch={refetch} />
                 </div>
         }
     </div>

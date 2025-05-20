@@ -17,9 +17,7 @@ export type TokenBalancesWithUSD = {
 
 export const useTokenBalance = (publicKey: string) => {
 
-    const [tokenBalances, setTokenBalances] = useState<
-        TokenBalancesWithUSD
-    >();
+    const [tokenBalances, setTokenBalances] = useState<TokenBalancesWithUSD>();
     const [loading, setLoading] = useState(true);
     const { getAccessTokenSilently } = useAuth0();
 

@@ -83,7 +83,7 @@ const getUserWallet = async (req, res) => {
 const getUserBalance = async (req, res) => {
     const address = req.query.address;
 
-    const tokenUSDPrice = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=USDT,USDC', {
+    const tokenUSDPrice = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=USDT,USDC,ETH', {
         headers: {
             'X-CMC_PRO_API_KEY': process.env.CMC_API_KEY
         }
@@ -91,7 +91,8 @@ const getUserBalance = async (req, res) => {
 
     const prices = {
         USDC: tokenUSDPrice.data.data.USDC.quote.USD.price,
-        USDT: tokenUSDPrice.data.data.USDT.quote.USD.price
+        USDT: tokenUSDPrice.data.data.USDT.quote.USD.price,
+        SepoliaETH: tokenUSDPrice.data.data.ETH.quote.USD.price
     };
 
     const tokens = await Promise.all(

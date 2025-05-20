@@ -5,8 +5,16 @@ import { abi } from "../ABI/tokenABI.js"
 
 export const getAccountBalance = async (token, address) => {
 
-    const contract = new Contract(token.address, abi, connection);
-    let balance = await contract.balanceOf(address);
-    balance = formatEther(balance, 18);
+    let balance;
+
+    if (!token.native) {
+        const contract = new Contract(token.address, abi, connection);
+        balance = await contract.balanceOf(address);
+        balance = formatEther(balance, 18);
+    }
+    else {
+        balance = await connection.getBalance(address);
+        balance = formatEther(balance);
+    }
     return balance;
 }

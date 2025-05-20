@@ -15,7 +15,7 @@ const AssestSelector = ({ selectedToken, allTokens, onSelect }: {
 
             id="tokens" className="bg-gray-50 border border-gray-300 text-gray-900 text-ssm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             {allTokens &&
-                allTokens.map(token => <option selected={selectedToken?.name === token.name}> {token.name}</option>)}
+                allTokens.map(token => <option selected={selectedToken?.name === token.name} className="text-center"> {token.name}</option>)}
         </select>
     </div>
 }

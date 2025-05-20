@@ -95,7 +95,7 @@ export const Dashboard = () => {
                             <SwapToken publicKey={publicKey || ""} tokenBalances={tokenBalances} loading={loading} refetch={refetch} getAccessTokenSilently={getAccessTokenSilently} />
                         </div>
                         <div className={`${selectedTab == "add_funds" ? "visible" : "hidden"}`}>
-                            <AddFund tokenBalances={tokenBalances} publicKey={publicKey || ""} />
+                            <AddFund tokenBalances={tokenBalances} publicKey={publicKey || ""} refetch={refetch} />
                         </div>
                     </div>
                 </div>

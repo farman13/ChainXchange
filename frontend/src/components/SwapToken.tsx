@@ -23,8 +23,8 @@ const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenS
     const [isSwapping, setisSwapping] = useState<boolean>(false);
 
     useEffect(() => {
-        setBaseAsset(tokenBalances?.tokens[0])
-        setQuoteAsset(tokenBalances?.tokens[1])
+        setBaseAsset(tokenBalances?.tokens[1])
+        setQuoteAsset(tokenBalances?.tokens[2])
     }, [loading, tokenBalances])
 
     useEffect(() => {
