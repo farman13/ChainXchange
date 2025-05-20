@@ -2,10 +2,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import axios from 'axios';
 import { useEffect } from "react";
 import { PrimaryButton } from "./Button"
+import { useAccount, useDisconnect } from "wagmi";
 
 const Navbar = () => {
 
     const { loginWithRedirect, user, isAuthenticated, logout, getAccessTokenSilently } = useAuth0();
+    const { isConnected } = useAccount();
+    const { disconnect } = useDisconnect();
 
     async function storeDetails() {
 
@@ -50,15 +53,26 @@ const Navbar = () => {
             <div className="px-5 py-2 font-medium">
                 DCEX
             </div>
-            <div>
-                {!isAuthenticated ?
-                    <PrimaryButton onClick={() => loginWithRedirect({
-                        authorizationParams: {
-                            connection: 'google-oauth2'
-                        }
-                    })}>Log In</PrimaryButton> :
-                    <PrimaryButton onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Log out</PrimaryButton>
-                }
+            <div className="flex">
+                <div className="mr-2">
+                    {
+                        isConnected && (
+                            <PrimaryButton onClick={() => disconnect()}>
+                                Disconnect wallet
+                            </PrimaryButton>
+                        )
+                    }
+                </div>
+                <div>
+                    {!isAuthenticated ?
+                        <PrimaryButton onClick={() => loginWithRedirect({
+                            authorizationParams: {
+                                connection: 'google-oauth2'
+                            }
+                        })}>Log In</PrimaryButton> :
+                        <PrimaryButton onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Log out</PrimaryButton>
+                    }
+                </div>
             </div>
         </div>
     )

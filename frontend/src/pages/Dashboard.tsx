@@ -6,6 +6,7 @@ import { TabButton, TertiaryButton } from "../components/Button";
 import { useEffect, useState } from "react";
 import { SwapToken } from "../components/SwapToken";
 import { useTokenBalance } from "../hooks/useTokenBalance";
+import { AddFund } from "../components/AddFund";
 
 type Tab = "tokens" | "send" | "add_funds" | "swap" | "withdraw"
 
@@ -53,7 +54,7 @@ export const Dashboard = () => {
                 <div className="pt-8 flex justify-center">
                     <div className="max-w-2xl bg-white rounded-2xl shadow-lg w-full p-10 border border-gray-200">
                         <Greeting image={user?.picture} name={user?.name} />
-                        <div className="text-slate-500 mt-4">
+                        <div className="text-slate-500 mt-4 bg-slate-100 p-3">
                             Account assets
                             <br />
 
@@ -90,8 +91,11 @@ export const Dashboard = () => {
                         <div className={`${selectedTab == "tokens" ? "visible" : "hidden"}`}>
                             <Assets tokenBalances={tokenBalances} />
                         </div>
-                        <div className={`${selectedTab == "swap" ? "visible" : "hidden"}`}>
+                        <div className={`${selectedTab == "swap" ? "visible" : "hidden"} bg-slate-100`}>
                             <SwapToken publicKey={publicKey || ""} tokenBalances={tokenBalances} loading={loading} refetch={refetch} getAccessTokenSilently={getAccessTokenSilently} />
+                        </div>
+                        <div className={`${selectedTab == "add_funds" ? "visible" : "hidden"}`}>
+                            <AddFund tokenBalances={tokenBalances} publicKey={publicKey || ""} />
                         </div>
                     </div>
                 </div>

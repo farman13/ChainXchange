@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { Auth0Provider } from '@auth0/auth0-react'
+import Config from './Config/Config.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById('root')!).render(
         audience: "authenticated Api",
         scope: "openid profile email"
       }}>
-      <App />
+      <Config>
+        <App />
+      </Config>
     </Auth0Provider>
   </StrictMode>,
 )
