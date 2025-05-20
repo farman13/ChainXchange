@@ -28,10 +28,13 @@ const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenS
     }, [loading, tokenBalances])
 
     useEffect(() => {
-        if (!baseAmount) {
+        if (baseAmount == "" || baseAmount == undefined || baseAmount == "0") {
+            console.log("inside if")
             setQuoteAmount("0");
             return;
         }
+        console.log(typeof (baseAmount))
+        console.log(baseAmount)
 
         const fetchQuote = async () => {
             const response = await axios.get(`http://localhost:3000/api/v1/token/quote?srctoken=${baseAsset?.name}&desttoken=${quoteAsset?.name}&amount=${baseAmount}&publicKey=${publicKey}`)
