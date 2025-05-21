@@ -140,7 +140,7 @@ const swapTokens = async (req, res) => {
 
 const withdrawAsset = async (req, res) => {
 
-    const { publicKey, address, amountToWithdraw, selectedToken } = req.body;
+    const { publicKey, recipient, amountToWithdraw, selectedToken } = req.body;
 
     const userWallet = await EthWallet.findOne({ publicKey })
 
@@ -151,7 +151,7 @@ const withdrawAsset = async (req, res) => {
     let tx;
     if (selectedToken.native) {
         tx = await wallet.sendTransaction({
-            to: address,
+            to: recipient,
             value: parseEther(amountToWithdraw), // amount in ETH
         });
 
@@ -161,7 +161,7 @@ const withdrawAsset = async (req, res) => {
     } else {
         const amount = parseUnits(amountToWithdraw, 18);
         const tokenContract = new Contract(selectedToken.address, TOKEN_IN_ABI, wallet);
-        tx = await tokenContract.transfer(address, amount);
+        tx = await tokenContract.transfer(recipient, amount);
         console.log("Transaction hash:", tx.hash);
         await tx.wait();
         console.log("Transfer confirmed");

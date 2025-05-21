@@ -6,17 +6,19 @@ import { PrimaryButton } from "./Button";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBalances }: {
+const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBalances, toAddress }: {
     publicKey: string,
     setDepositAmountModal: Dispatch<SetStateAction<boolean>>,
     refetchUser: () => void,
-    tokenBalances: TokenBalancesWithUSD | undefined
+    tokenBalances: TokenBalancesWithUSD | undefined,
+    toAddress: boolean
 
 }) => {
     const [selectedToken, setSelectedToken] = useState<TokenBalances>()
     const [selectedAmount, setSelectedAmount] = useState<string>()
     const [amountToWithdraw, setAmountToWithdraw] = useState<string>()
     const [withdrawing, setWithdrawing] = useState(false)
+    const [Address, setAddress] = useState<string>()
 
     const presets = ["1", "2", "5"]
 
@@ -35,11 +37,20 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
 
         console.log("amountToWithdraw : ", amountToWithdraw);
         console.log(publicKey);
+
+        let recipient;
+
+        if (Address)
+            recipient = Address;
+        else {
+            recipient = address
+        }
+
         const token = await getAccessTokenSilently();
         console.log("inside withdawr")
         console.log(selectedToken)
         const response = await axios.post("http://localhost:3000/api/v1/user/withdraw", {
-            publicKey, address, amountToWithdraw, selectedToken,
+            publicKey, recipient, amountToWithdraw, selectedToken,
         }, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -113,6 +124,14 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
                 ))}
             </div>
         </div>
+        {toAddress &&
+            <div>
+                <input type="text" placeholder="Enter Ethereum wallet address " className="text-xl text-center w-full border mt-2 border-slate-300 rounded p-1" onChange={(e) => {
+                    setAddress(e.target.value)
+                    console.log(Address)
+                }} />
+            </div>
+        }
         <div className="flex justify-between">
             <div>
                 <button
