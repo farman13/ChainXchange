@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { SwapToken } from "../components/SwapToken";
 import { useTokenBalance } from "../hooks/useTokenBalance";
 import { AddFund } from "../components/AddFund";
+import { WithdrawFund } from "../components/WithdrawFund";
 
 type Tab = "tokens" | "send" | "add_funds" | "swap" | "withdraw"
 
@@ -95,8 +96,11 @@ export const Dashboard = () => {
                             <SwapToken publicKey={publicKey || ""} tokenBalances={tokenBalances} loading={loading} refetch={refetch} getAccessTokenSilently={getAccessTokenSilently} />
                         </div>
                         <div className={`${selectedTab == "add_funds" ? "visible" : "hidden"}`}>
-                            <AddFund tokenBalances={tokenBalances} publicKey={publicKey || ""} refetch={refetch} />
+                            <AddFund publicKey={publicKey || ""} refetchUser={refetch} />
                         </div>
+                        {/* <div className={`${selectedTab == "withdraw" ? "visible" : "hidden"}`}>
+                            <WithdrawFund publicKey={publicKey || ""} refetch={refetch} />
+                        </div> */}
                     </div>
                 </div>
             }

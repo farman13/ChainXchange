@@ -2,32 +2,41 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AssestSelector } from "./AssestSelector";
 import { TokenBalances, TokenBalancesWithUSD } from "../hooks/useTokenBalance";
 import { PrimaryButton } from "./Button";
-import { useWalletClient } from "wagmi";
+import { usePublicClient, useWalletClient } from "wagmi";
 import { parseEther } from "viem";
+import tokenAbi from "../Abi/tokenAbi.json";
 
-const DepositAsset = ({ publicKey, tokenBalances, setDepositAmountModal, refetch }: {
+const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchConnectedWallet, tokenBalances }: {
     publicKey: string,
-    tokenBalances: TokenBalancesWithUSD | undefined,
     setDepositAmountModal: Dispatch<SetStateAction<boolean>>,
-    refetch: () => void,
+    refetchUser: () => void,
+    refetchConnectedWallet: () => void,
+    tokenBalances: TokenBalancesWithUSD | undefined
 
 }) => {
 
     const [selectedToken, setSelectedToken] = useState<TokenBalances>()
     const [selectedAmount, setSelectedAmount] = useState<string>()
     const [amountToSend, setAmountToSend] = useState<string>()
+    const [depositing, setDepositing] = useState(false)
 
     const presets = ["1", "2", "5"]
 
     useEffect(() => {
         setSelectedToken(tokenBalances?.tokens[0]);
-    }, [selectedToken, tokenBalances])
+    }, [tokenBalances])
+
+    console.log("tokenbalances", tokenBalances);
 
     const { data: walletClient } = useWalletClient();
+    const publicClient = usePublicClient()
 
     const depositFund = async () => {
 
-        if (!walletClient) {
+        setDepositing(true);
+        let txHash;
+
+        if (!walletClient || !publicClient) {
             console.error('Wallet not connected');
             return;
         }
@@ -35,15 +44,33 @@ const DepositAsset = ({ publicKey, tokenBalances, setDepositAmountModal, refetch
         const [account] = await walletClient.getAddresses();
         console.log("amountToSend : ", amountToSend);
         console.log(publicKey);
-        const txHash = await walletClient.sendTransaction({
-            account,
-            to: publicKey as `0x${string}`,
-            value: parseEther(amountToSend || '0'),
-        });
 
+        if (selectedToken?.native) {
+            txHash = await walletClient.sendTransaction({
+                account,
+                to: publicKey as `0x${string}`,
+                value: parseEther(amountToSend || '0'),
+            });
+        } else {
+            console.log("Addr :", selectedToken?.address)
+            console.log("amount:", amountToSend)
+            txHash = await walletClient.writeContract({
+                account,
+                address: selectedToken?.address as `0x${string}`,
+                abi: tokenAbi.abi as any, // or as Abi if you have the type from viem
+                functionName: 'transfer',
+                args: [publicKey, parseEther(amountToSend || '0')],
+            });
+        }
         console.log('Transaction hash:', txHash);
+        const receipt = await publicClient.waitForTransactionReceipt({ hash: txHash });
+
+        console.log("Transaction confirmed", receipt);
         alert(`Transaction hash:${txHash}`)
-        refetch();
+
+        refetchConnectedWallet();
+        refetchUser();
+        setDepositing(false);
 
     }
 
@@ -55,7 +82,10 @@ const DepositAsset = ({ publicKey, tokenBalances, setDepositAmountModal, refetch
             <AssestSelector
                 selectedToken={selectedToken}
                 allTokens={tokenBalances?.tokens}
-                onSelect={(token: TokenBalances) => { setSelectedToken(token) }}
+                onSelect={(asset: TokenBalances) => {
+                    setSelectedToken(asset)
+                    console.log("ssesststst", asset);
+                }}
             />
         </div>
         <div className="text-sm text-slate-500 text-center mt-2">
@@ -71,17 +101,19 @@ const DepositAsset = ({ publicKey, tokenBalances, setDepositAmountModal, refetch
                             console.log("hiii")
                             setSelectedAmount(e.target.value)
                             setAmountToSend(String(Number(e.target.value) / (selectedToken?.usdPrice ?? 0)))
-                            console.log(e.target.value)
+                            console.log(amountToSend);
                         }
                         else {
                             setSelectedAmount("")
+                            setAmountToSend('0');
                         }
                     }}
                     className="text-2xl font-semibold text-center w-full outline-none"
                     placeholder="$0 USD"
                 />
                 <div className="text-sm text-gray-500 mt-1">
-                    ~{selectedAmount ? (Number(selectedAmount) / (selectedToken?.usdPrice ?? 0)).toFixed(5) : 0} {selectedToken?.name}
+                    {amountToSend}
+                    {/* ~{selectedAmount ? (Number(selectedAmount) / (selectedToken?.usdPrice ?? 0)).toFixed(5) : 0} {selectedToken?.name} */}
                 </div>
             </div>
 
@@ -89,7 +121,11 @@ const DepositAsset = ({ publicKey, tokenBalances, setDepositAmountModal, refetch
                 {presets.map((amount) => (
                     <button
                         key={amount}
-                        onClick={() => setSelectedAmount(amount)}
+                        onClick={() => {
+                            setSelectedAmount(amount)
+                            setAmountToSend(String(Number(amount) / (selectedToken?.usdPrice ?? 0)))
+                            console.log(amountToSend);
+                        }}
                         className={`flex-1 pt-2 pb-2 text-sm font-medium border border-slate-300 cursor-pointer ${selectedAmount === amount
                             ? "bg-gray-300"
                             : "hover:bg-gray-50"
@@ -110,7 +146,7 @@ const DepositAsset = ({ publicKey, tokenBalances, setDepositAmountModal, refetch
                 </button>
             </div>
             <div className="mt-4">
-                <PrimaryButton onClick={depositFund} >Deposit</PrimaryButton>
+                <PrimaryButton onClick={depositFund} >{depositing ? "Depositing..." : "Deposit"}</PrimaryButton>
             </div>
         </div>
     </div>

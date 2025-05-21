@@ -7,7 +7,9 @@ export type TokenBalances = {
     balance: number,
     usdPrice: number,
     usdBalance: number,
-    image: string
+    image: string,
+    native: boolean,
+    address: string
 }
 
 export type TokenBalancesWithUSD = {

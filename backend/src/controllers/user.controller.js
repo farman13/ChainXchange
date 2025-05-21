@@ -104,7 +104,8 @@ const getUserBalance = async (req, res) => {
                 usdPrice: prices[token.name],
                 usdBalance: parseFloat(raw) * prices[token.name],
                 image: token.image,
-                address: token.address
+                address: token.address,
+                native: token.native
             }
 
         })
