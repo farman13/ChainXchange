@@ -1,13 +1,15 @@
 import { EthWallet, InrWallet, User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { SUPPORTED_TOKENS } from "../constants.js";
+import { connection, SUPPORTED_TOKENS } from "../constants.js";
 import { decrypt, encrypt } from "../utils/EncryptDecrypt.js";
 import { generateEthWallet } from "../utils/generateWallet.js";
 import { getAccountBalance } from "../utils/getAccountBalance.js";
 import axios from 'axios';
 import { SwapToken } from "../utils/SwapToken.js";
 import { SendEth } from "../utils/SendEth.js";
+import { TOKEN_IN_ABI } from "../ABI/token.js";
+import { parseEther, Wallet, parseUnits, Contract } from "ethers"
 
 const signupUser = async (req, res) => {
     const { username, email, picture, sub } = req.body
@@ -136,4 +138,38 @@ const swapTokens = async (req, res) => {
     })
 }
 
-export { signupUser, getUserWallet, getUserBalance, swapTokens };
+const withdrawAsset = async (req, res) => {
+
+    const { publicKey, address, amountToWithdraw, selectedToken } = req.body;
+
+    const userWallet = await EthWallet.findOne({ publicKey })
+
+    const privateKey = decrypt(userWallet.privateKey, userWallet.iv);
+    const wallet = new Wallet(privateKey, connection);
+    console.log(wallet);
+
+    let tx;
+    if (selectedToken.native) {
+        tx = await wallet.sendTransaction({
+            to: address,
+            value: parseEther(amountToWithdraw), // amount in ETH
+        });
+
+        console.log("Transaction hash:", tx.hash);
+        await tx.wait(); // Wait for confirmation
+        console.log("Transaction confirmed");
+    } else {
+        const amount = parseUnits(amountToWithdraw, 18);
+        const tokenContract = new Contract(selectedToken.address, TOKEN_IN_ABI, wallet);
+        tx = await tokenContract.transfer(address, amount);
+        console.log("Transaction hash:", tx.hash);
+        await tx.wait();
+        console.log("Transfer confirmed");
+    }
+
+    res.json({
+        tx
+    })
+}
+
+export { signupUser, getUserWallet, getUserBalance, swapTokens, withdrawAsset };

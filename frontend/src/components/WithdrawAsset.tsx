@@ -1,24 +1,22 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { TokenBalances, TokenBalancesWithUSD } from "../hooks/useTokenBalance"
+import { useAccount } from "wagmi"
 import { AssestSelector } from "./AssestSelector";
-import { TokenBalances, TokenBalancesWithUSD } from "../hooks/useTokenBalance";
 import { PrimaryButton } from "./Button";
-import { usePublicClient, useWalletClient } from "wagmi";
-import { parseEther } from "viem";
-import tokenAbi from "../Abi/tokenAbi.json";
+import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 
-const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchConnectedWallet, tokenBalances }: {
+const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBalances }: {
     publicKey: string,
     setDepositAmountModal: Dispatch<SetStateAction<boolean>>,
     refetchUser: () => void,
-    refetchConnectedWallet: () => void,
     tokenBalances: TokenBalancesWithUSD | undefined
 
 }) => {
-
     const [selectedToken, setSelectedToken] = useState<TokenBalances>()
     const [selectedAmount, setSelectedAmount] = useState<string>()
-    const [amountToSend, setAmountToSend] = useState<string>()
-    const [depositing, setDepositing] = useState(false)
+    const [amountToWithdraw, setAmountToWithdraw] = useState<string>()
+    const [withdrawing, setWithdrawing] = useState(false)
 
     const presets = ["1", "2", "5"]
 
@@ -28,49 +26,29 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
 
     console.log("tokenbalances", tokenBalances);
 
-    const { data: walletClient } = useWalletClient();
-    const publicClient = usePublicClient()
+    const { address } = useAccount();
+    const { getAccessTokenSilently } = useAuth0();
 
-    const depositFund = async () => {
+    const withdrawFund = async () => {
 
-        setDepositing(true);
-        let txHash;
+        setWithdrawing(true);
 
-        if (!walletClient || !publicClient) {
-            console.error('Wallet not connected');
-            return;
-        }
-
-        const [account] = await walletClient.getAddresses();
-        console.log("amountToSend : ", amountToSend);
+        console.log("amountToWithdraw : ", amountToWithdraw);
         console.log(publicKey);
-
-        if (selectedToken?.native) {
-            txHash = await walletClient.sendTransaction({
-                account,
-                to: publicKey as `0x${string}`,
-                value: parseEther(amountToSend || '0'),
-            });
-        } else {
-            console.log("Addr :", selectedToken?.address)
-            console.log("amount:", amountToSend)
-            txHash = await walletClient.writeContract({
-                account,
-                address: selectedToken?.address as `0x${string}`,
-                abi: tokenAbi.abi as any, // or as Abi if you have the type from viem
-                functionName: 'transfer',
-                args: [publicKey, parseEther(amountToSend || '0')],
-            });
-        }
-        console.log('Transaction hash:', txHash);
-        const receipt = await publicClient.waitForTransactionReceipt({ hash: txHash });
-
-        console.log("Transaction confirmed", receipt);
-        alert(`Transaction hash:${txHash}`)
-
-        refetchConnectedWallet();
+        const token = await getAccessTokenSilently();
+        console.log("inside withdawr")
+        console.log(selectedToken)
+        const response = await axios.post("http://localhost:3000/api/v1/user/withdraw", {
+            publicKey, address, amountToWithdraw, selectedToken,
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+        })
+        console.log(response.data)
+        alert(`Transaction hash:${response.data}`)
         refetchUser();
-        setDepositing(false);
+        setWithdrawing(false);
 
     }
 
@@ -100,12 +78,12 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
                         if (e.target.value) {
                             console.log("hiii")
                             setSelectedAmount(e.target.value)
-                            setAmountToSend(String(Number(e.target.value) / (selectedToken?.usdPrice ?? 0)))
-                            console.log(amountToSend);
+                            setAmountToWithdraw(String(Number(e.target.value) / (selectedToken?.usdPrice ?? 0)))
+                            console.log(amountToWithdraw);
                         }
                         else {
                             setSelectedAmount("")
-                            setAmountToSend('0');
+                            setAmountToWithdraw('0');
                         }
                     }}
                     className="text-2xl font-semibold text-center w-full outline-none"
@@ -122,8 +100,8 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
                         key={amount}
                         onClick={() => {
                             setSelectedAmount(amount)
-                            setAmountToSend(String(Number(amount) / (selectedToken?.usdPrice ?? 0)))
-                            console.log(amountToSend);
+                            setAmountToWithdraw(String(Number(amount) / (selectedToken?.usdPrice ?? 0)))
+                            console.log(amountToWithdraw);
                         }}
                         className={`flex-1 pt-2 pb-2 text-sm font-medium border border-slate-300 cursor-pointer ${selectedAmount === amount
                             ? "bg-gray-300"
@@ -145,10 +123,10 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
                 </button>
             </div>
             <div className="mt-4">
-                <PrimaryButton onClick={depositFund} >{depositing ? "Depositing..." : "Deposit"}</PrimaryButton>
+                <PrimaryButton onClick={withdrawFund} >{withdrawing ? "withdrawing..." : "withdraw"}</PrimaryButton>
             </div>
         </div>
     </div>
 }
 
-export { DepositAsset };
+export { WithdrawAsset }

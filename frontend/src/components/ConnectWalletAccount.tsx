@@ -3,7 +3,8 @@ import { ArrowIcon } from "./ArrowIcon"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { useAccount } from "wagmi"
 
-const ConnectWalletAccount = ({ setExternalAccount, setDepositAmountModal }: {
+const ConnectWalletAccount = ({ children, setExternalAccount, setDepositAmountModal }: {
+    children: React.ReactNode
     setExternalAccount: Dispatch<SetStateAction<boolean>>
     setDepositAmountModal: Dispatch<SetStateAction<boolean>>
 
@@ -28,14 +29,14 @@ const ConnectWalletAccount = ({ setExternalAccount, setDepositAmountModal }: {
                             )}
                         </ConnectButton.Custom>
                         <div className="text-sm text-slate-400">
-                            Deposit assets from your wallet
+                            {children}
                         </div>
                     </div>
                     :
                     <div onClick={() => setDepositAmountModal(true)} className="cursor-pointer">
                         <div>wallet connected : {address?.slice(0, 18)}...{address?.slice(-4)} </div>
                         <div className="text-sm text-slate-400">
-                            Deposit assets from your wallet
+                            {children}
                         </div>
                     </div>
                 }

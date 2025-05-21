@@ -32,7 +32,7 @@ const AddFund = ({ publicKey, refetchUser }: {
                     <div className="text-2xl text-slate-600 font-bold p-3 pt-4">
                         Deposit from External Account/Wallet
                     </div>
-                    <ConnectWalletAccount setExternalAccount={setExternalAccount} setDepositAmountModal={setDepositAmountModal} />
+                    <ConnectWalletAccount setExternalAccount={setExternalAccount} setDepositAmountModal={setDepositAmountModal} >Deposit assets from your wallet</ConnectWalletAccount>
                 </div>
                 :
                 <div>

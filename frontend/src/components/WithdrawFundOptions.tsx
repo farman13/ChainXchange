@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { ArrowIcon } from "./ArrowIcon"
 import WalletModal from "./WalletModal";
 
-const AddFundOptions = ({ publicKey, setExternalAccount }: {
+const WithdrawFundOptions = ({ publicKey, setExternalAccount }: {
     publicKey: string,
     setExternalAccount: Dispatch<SetStateAction<boolean>>
 }) => {
@@ -11,9 +11,9 @@ const AddFundOptions = ({ publicKey, setExternalAccount }: {
     return <div className="m-4">
         <div className="flex justify-between text-slate-600 mt-4 p-3 border border-gray-400 bg-white cursor-pointer hover:bg-slate-100" onClick={() => setExternalAccount(true)}>
             <div className="text-xl">
-                From External Account/Wallet
+                To External Account/Wallet
                 <div className="text-sm text-slate-400">
-                    Deposit assets from your connected wallet
+                    Asset will be sent to connected wallet
                 </div>
             </div>
             <div className="p-2">
@@ -22,9 +22,9 @@ const AddFundOptions = ({ publicKey, setExternalAccount }: {
         </div>
         <div className="flex justify-between text-slate-600 p-3 pb-4 border border-t-0 border-gray-400 bg-white cursor-pointer hover:bg-slate-100" onClick={() => setIsModalOpen(true)}>
             <div className="text-xl">
-                To This Ethereum Wallet Address
+                To Ethereum Wallet Address
                 <div className="text-sm text-slate-400">
-                    Deposit assets via this Ethereum wallet address
+                    Assets will be sent to a Ethereum address that you specify
                 </div>
             </div>
             <div className="p-2">
@@ -38,4 +38,4 @@ const AddFundOptions = ({ publicKey, setExternalAccount }: {
     </div>
 }
 
-export { AddFundOptions }
+export { WithdrawFundOptions }

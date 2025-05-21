@@ -1,7 +1,12 @@
 import { useState } from "react"
+import { ConnectWalletAccount } from "./ConnectWalletAccount"
+import { WithdrawFundOptions } from "./WithdrawFundOptions"
+import { TokenBalancesWithUSD } from "../hooks/useTokenBalance"
+import { WithdrawAsset } from "./WithdrawAsset"
 
-const WithdrawFund = ({ publicKey, refetch }: {
+const WithdrawFund = ({ publicKey, tokenBalances, refetch }: {
     publicKey: string,
+    tokenBalances: TokenBalancesWithUSD | undefined
     refetch: () => void,
 }) => {
 
@@ -15,22 +20,22 @@ const WithdrawFund = ({ publicKey, refetch }: {
                 <div className="text-3xl text-slate-600 font-bold p-3 pt-4">
                     Withdraw Funds
                 </div>
-                <WithFundOptions publicKey={publicKey} setExternalAccount={setExternalAccount} />
+                <WithdrawFundOptions publicKey={publicKey} setExternalAccount={setExternalAccount} />
             </div>
             :
             !depositAmountModal ?
                 <div>
                     <div className="text-2xl text-slate-600 font-bold p-3 pt-4">
-                        Deposit from External Account/Wallet
+                        Withdraw to External Account/Wallet
                     </div>
-                    <ConnectWalletAccount setExternalAccount={setExternalAccount} setDepositAmountModal={setDepositAmountModal} />
+                    <ConnectWalletAccount setExternalAccount={setExternalAccount} setDepositAmountModal={setDepositAmountModal} >withdraw assets to your wallet</ConnectWalletAccount>
                 </div>
                 :
                 <div>
                     <div className="text-2xl text-slate-600 font-bold p-3 pt-4">
-                        Deposit via connected wallet
+                        Withdraw to connected wallet
                     </div>
-                    <DepositAsset publicKey={publicKey} setDepositAmountModal={setDepositAmountModal} refetchUser={refetch} />
+                    <WithdrawAsset publicKey={publicKey} setDepositAmountModal={setDepositAmountModal} refetchUser={refetch} tokenBalances={tokenBalances} />
                 </div>
         }
     </div>

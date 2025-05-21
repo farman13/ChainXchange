@@ -98,9 +98,9 @@ export const Dashboard = () => {
                         <div className={`${selectedTab == "add_funds" ? "visible" : "hidden"}`}>
                             <AddFund publicKey={publicKey || ""} refetchUser={refetch} />
                         </div>
-                        {/* <div className={`${selectedTab == "withdraw" ? "visible" : "hidden"}`}>
-                            <WithdrawFund publicKey={publicKey || ""} refetch={refetch} />
-                        </div> */}
+                        <div className={`${selectedTab == "withdraw" ? "visible" : "hidden"}`}>
+                            <WithdrawFund publicKey={publicKey || ""} tokenBalances={tokenBalances} refetch={refetch} />
+                        </div>
                     </div>
                 </div>
             }
