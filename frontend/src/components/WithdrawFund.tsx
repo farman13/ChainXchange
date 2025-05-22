@@ -35,7 +35,7 @@ const WithdrawFund = ({ publicKey, tokenBalances, refetch }: {
                     <div className="text-2xl text-slate-600 font-bold p-3 pt-4">
                         Withdraw to connected wallet
                     </div>
-                    <WithdrawAsset publicKey={publicKey} setDepositAmountModal={setDepositAmountModal} refetchUser={refetch} tokenBalances={tokenBalances} toAddress={false} />
+                    <WithdrawAsset publicKey={publicKey} setDepositAmountModal={setDepositAmountModal} refetchUser={refetch} tokenBalances={tokenBalances} toAddress={false} text="withdraw" />
                 </div>
         }
     </div>

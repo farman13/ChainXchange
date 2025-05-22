@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TokenBalancesWithUSD } from "../hooks/useTokenBalance";
 import { WithdrawAsset } from "./WithdrawAsset";
 import { ArrowIcon } from "./ArrowIcon";
+import { SendAsset } from "./SendAsset";
 
 const SendFund = ({ publicKey, tokenBalances, refetch }: {
     publicKey: string,
@@ -43,9 +44,9 @@ const SendFund = ({ publicKey, tokenBalances, refetch }: {
             </div>
             :
             isEmailModalOpen ?
-                <WithdrawAsset publicKey={publicKey} setDepositAmountModal={setIsEmailModalOpen} refetchUser={refetch} tokenBalances={tokenBalances} toAddress={true} text={"Enter email Address"} />
+                <SendAsset publicKey={publicKey} setIsEmailModalOpen={setIsEmailModalOpen} refetchUser={refetch} tokenBalances={tokenBalances} />
                 :
-                <WithdrawAsset publicKey={publicKey} setDepositAmountModal={setIsExternalModalOpen} refetchUser={refetch} tokenBalances={tokenBalances} toAddress={true} text={"Enter Ethereum wallet Address"} />
+                <WithdrawAsset publicKey={publicKey} setDepositAmountModal={setIsExternalModalOpen} refetchUser={refetch} tokenBalances={tokenBalances} toAddress={true} text={"Send"} />
         }
     </div>
 }

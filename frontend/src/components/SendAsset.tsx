@@ -1,25 +1,22 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { PrimaryButton } from "./Button"
 import { TokenBalances, TokenBalancesWithUSD } from "../hooks/useTokenBalance"
-import { useAccount } from "wagmi"
-import { AssestSelector } from "./AssestSelector";
-import { PrimaryButton } from "./Button";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react"
+import axios from "axios"
+import { AssestSelector } from "./AssestSelector"
 
-const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBalances, toAddress, text }: {
+const SendAsset = ({ publicKey, setIsEmailModalOpen, refetchUser, tokenBalances }: {
     publicKey: string,
-    setDepositAmountModal: Dispatch<SetStateAction<boolean>>,
+    setIsEmailModalOpen: Dispatch<SetStateAction<boolean>>,
     refetchUser: () => void,
     tokenBalances: TokenBalancesWithUSD | undefined,
-    toAddress: boolean,
-    text?: string
 
 }) => {
     const [selectedToken, setSelectedToken] = useState<TokenBalances>()
     const [selectedAmount, setSelectedAmount] = useState<string>()
     const [amountToWithdraw, setAmountToWithdraw] = useState<string>()
     const [withdrawing, setWithdrawing] = useState(false)
-    const [Address, setAddress] = useState<string>()
+    const [emailAddress, setEmailAddress] = useState<string>()
 
     const presets = ["1", "2", "5"]
 
@@ -29,10 +26,9 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
 
     console.log("tokenbalances", tokenBalances);
 
-    const { address } = useAccount();
     const { getAccessTokenSilently } = useAuth0();
 
-    const withdrawFund = async () => {
+    const sendFund = async () => {
 
         setWithdrawing(true);
 
@@ -40,16 +36,13 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
         console.log(publicKey);
         let recipient;
 
-        if (Address)
-            recipient = Address;
-        else {
-            recipient = address
-        }
+        if (emailAddress)
+            recipient = emailAddress;
 
         const token = await getAccessTokenSilently();
         console.log("inside withdraw")
         console.log(selectedToken)
-        const response = await axios.post("http://localhost:3000/api/v1/user/withdraw", {
+        const response = await axios.post("http://localhost:3000/api/v1/user/send", {
             publicKey, recipient, amountToWithdraw, selectedToken,
         }, {
             headers: {
@@ -127,28 +120,26 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
                 ))}
             </div>
         </div>
-        {toAddress &&
-            <div>
-                <input type="text" placeholder={"Enter Ethereum wallet Address"} className="text-xl text-center w-full border mt-2 border-slate-300 rounded p-1" onChange={(e) => {
-                    setAddress(e.target.value)
-                    console.log(Address)
-                }} />
-            </div>
-        }
+        <div>
+            <input type="text" placeholder={"Enter Email Address"} className="text-xl text-center w-full border mt-2 border-slate-300 rounded p-1" onChange={(e) => {
+                setEmailAddress(e.target.value)
+                console.log(emailAddress)
+            }} />
+        </div>
         <div className="flex justify-between">
             <div>
                 <button
-                    className="bg-white border border-gray-400 text-md px-6 py-2 mt-4 rounded-lg shadow hover:bg-gray-100"
-                    onClick={() => setDepositAmountModal(false)}
+                    className="bg-white border border-gray-400 text-md px-6 py-2 mt-4 rounded-lg shadow hover:bg-gray-100 cursor-pointer"
+                    onClick={() => setIsEmailModalOpen(false)}
                 >
                     back
                 </button>
             </div>
             <div className="mt-4">
-                <PrimaryButton onClick={withdrawFund} >{withdrawing ? `${text}ing...` : text}</PrimaryButton>
+                <PrimaryButton onClick={sendFund} >{withdrawing ? "sending..." : "send"}</PrimaryButton>
             </div>
         </div>
     </div>
 }
 
-export { WithdrawAsset }
+export { SendAsset };

@@ -172,4 +172,51 @@ const withdrawAsset = async (req, res) => {
     })
 }
 
-export { signupUser, getUserWallet, getUserBalance, swapTokens, withdrawAsset };
+const sendAsset = async (req, res) => {
+    const { publicKey, recipient, amountToWithdraw, selectedToken } = req.body;
+
+    const userWallet = await EthWallet.findOne({ publicKey })
+
+    const privateKey = decrypt(userWallet.privateKey, userWallet.iv);
+    const wallet = new Wallet(privateKey, connection);
+    console.log(wallet);
+
+    const recipientAccount = await User.findOne({ email: recipient });
+
+    if (!recipientAccount) {
+        res.json({
+            message: "Recipient address not exist"
+        })
+    }
+
+    const recipientWallet = await EthWallet.findById(recipientAccount.EthWalletId)
+    console.log("recipient : ", recipientWallet);
+
+    const recipientPublicKey = recipientWallet.publicKey
+    console.log("recipientPublicKey : ", recipientPublicKey);
+
+    let tx;
+    if (selectedToken.native) {
+        tx = await wallet.sendTransaction({
+            to: recipientPublicKey,
+            value: parseEther(amountToWithdraw), // amount in ETH
+        });
+
+        console.log("Transaction hash:", tx.hash);
+        await tx.wait(); // Wait for confirmation
+        console.log("Transaction confirmed");
+    } else {
+        const amount = parseUnits(amountToWithdraw, 18);
+        const tokenContract = new Contract(selectedToken.address, TOKEN_IN_ABI, wallet);
+        tx = await tokenContract.transfer(recipientPublicKey, amount);
+        console.log("Transaction hash:", tx.hash);
+        await tx.wait();
+        console.log("Transfer confirmed");
+    }
+
+    res.json({
+        tx
+    })
+}
+
+export { signupUser, getUserWallet, getUserBalance, swapTokens, withdrawAsset, sendAsset };
