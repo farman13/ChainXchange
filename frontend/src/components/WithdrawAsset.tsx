@@ -6,12 +6,13 @@ import { PrimaryButton } from "./Button";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBalances, toAddress }: {
+const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBalances, toAddress, text }: {
     publicKey: string,
     setDepositAmountModal: Dispatch<SetStateAction<boolean>>,
     refetchUser: () => void,
     tokenBalances: TokenBalancesWithUSD | undefined,
-    toAddress: boolean
+    toAddress: boolean,
+    text?: string
 
 }) => {
     const [selectedToken, setSelectedToken] = useState<TokenBalances>()
@@ -37,7 +38,6 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
 
         console.log("amountToWithdraw : ", amountToWithdraw);
         console.log(publicKey);
-
         let recipient;
 
         if (Address)
@@ -89,7 +89,9 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
                         if (e.target.value) {
                             console.log("hiii")
                             setSelectedAmount(e.target.value)
-                            setAmountToWithdraw(String(Number(e.target.value) / (selectedToken?.usdPrice ?? 0)))
+                            let formatedAmount = (Number(e.target.value) / (selectedToken?.usdPrice ?? 0)).toFixed(18)
+                            setAmountToWithdraw(String(formatedAmount))
+
                             console.log(amountToWithdraw);
                         }
                         else {
@@ -111,7 +113,8 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
                         key={amount}
                         onClick={() => {
                             setSelectedAmount(amount)
-                            setAmountToWithdraw(String(Number(amount) / (selectedToken?.usdPrice ?? 0)))
+                            let formatedAmount = (Number(amount) / (selectedToken?.usdPrice ?? 0)).toFixed(18)
+                            setAmountToWithdraw(String(formatedAmount))
                             console.log(amountToWithdraw);
                         }}
                         className={`flex-1 pt-2 pb-2 text-sm font-medium border border-slate-300 cursor-pointer ${selectedAmount === amount
@@ -126,7 +129,7 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
         </div>
         {toAddress &&
             <div>
-                <input type="text" placeholder="Enter Ethereum wallet address " className="text-xl text-center w-full border mt-2 border-slate-300 rounded p-1" onChange={(e) => {
+                <input type="text" placeholder={text} className="text-xl text-center w-full border mt-2 border-slate-300 rounded p-1" onChange={(e) => {
                     setAddress(e.target.value)
                     console.log(Address)
                 }} />

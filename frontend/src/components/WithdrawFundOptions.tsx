@@ -17,7 +17,7 @@ const WithdrawFundOptions = ({ publicKey, setExternalAccount, tokenBalances, ref
             <div>
                 <div className="flex justify-between text-slate-600 mt-4 p-3 border border-gray-400 bg-white cursor-pointer hover:bg-slate-100" onClick={() => setExternalAccount(true)}>
                     <div className="text-xl">
-                        To External Account/Wallet
+                        To External Connected Account/Wallet
                         <div className="text-sm text-slate-400">
                             Asset will be sent to connected wallet
                         </div>
@@ -39,7 +39,7 @@ const WithdrawFundOptions = ({ publicKey, setExternalAccount, tokenBalances, ref
                 </div>
             </div>
             :
-            <WithdrawAsset publicKey={publicKey} setDepositAmountModal={setIsModalOpen} refetchUser={refetch} tokenBalances={tokenBalances} toAddress={true} />
+            <WithdrawAsset publicKey={publicKey} setDepositAmountModal={setIsModalOpen} refetchUser={refetch} tokenBalances={tokenBalances} toAddress={true} text={"Enter Ethereum wallet address"} />
         }
     </div>
 }
