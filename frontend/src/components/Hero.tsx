@@ -11,7 +11,7 @@ const Hero = () => {
         <div>
             <div className="text-5xl font-medium pt-15 flex justify-center">
                 <span>The Indian Cryptocurrency</span>
-                <span className="text-blue-500 pl-2">Revolution</span>
+                <span className="text-blue-700 pl-2">Revolution</span>
             </div>
             <div className="flex justify-center pt-4 text-2xl font-semimedium text-slate-500">
                 Create a frictionless wallet with just a Google account
