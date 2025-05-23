@@ -86,7 +86,7 @@ const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenS
             title="You pay :"
             topBorderEnabled={true}
             bottomBorderEnabled={false}
-            subtitle={<div className="text-slate-500 text-sm">{`Current balance : ${baseAsset?.balance.toFixed(2)} ${baseAsset?.name}`}</div>}
+            subtitle={<div className="text-slate-500 text-sm">{`Current balance : ${baseAsset?.balance.toFixed(4)} ${baseAsset?.name}`}</div>}
             amount={baseAmount}
             onChangeAmount={(value: string) => setBaseAmount(value)}
         />
@@ -112,7 +112,7 @@ const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenS
             bottomBorderEnabled={true}
             amount={quoteAmount}
             inputDisable={true}
-            subtitle={<div className="text-slate-500 text-sm">{`Current balance : ${quoteAsset?.balance.toFixed(2)} ${quoteAsset?.name}`}</div>}
+            subtitle={<div className="text-slate-500 text-sm">{`Current balance : ${quoteAsset?.balance.toFixed(4)} ${quoteAsset?.name}`}</div>}
         />
         <div className="flex justify-end mt-3">
             <PrimaryButton onClick={initiateSwap} >

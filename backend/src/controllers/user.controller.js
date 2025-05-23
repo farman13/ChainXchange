@@ -130,7 +130,7 @@ const swapTokens = async (req, res) => {
     console.log(wallet);
 
     const privateKey = decrypt(wallet.privateKey, wallet.iv);
-
+    console.log(baseAsset, baseAmount);
     const hash = await SwapToken(baseAsset, quoteAsset, baseAmount, privateKey);
 
     res.json({

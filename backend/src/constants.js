@@ -3,7 +3,7 @@ export const SUPPORTED_TOKENS = [
         name: 'SepoliaETH',
         decimals: 18,
         image: "https://insidebitcoins.com/wp-content/uploads/2024/12/ethereum-eth-logo-300x300.png",
-        address: "",
+        address: '0xfff9976782d46cc05630d1f6ebab18b2324d6b14',  // uniswap weth address
         native: true
     },
     {
