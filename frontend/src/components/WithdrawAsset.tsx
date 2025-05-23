@@ -40,27 +40,46 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
         console.log(publicKey);
         let recipient;
 
-        if (Address)
-            recipient = Address;
-        else {
-            recipient = address
+        if (!amountToWithdraw) {
+            alert("Amount must be greater than zero.");
+            setWithdrawing(false);
+            return;
         }
 
-        const token = await getAccessTokenSilently();
-        console.log("inside withdraw")
-        console.log(selectedToken)
-        const response = await axios.post("http://localhost:3000/api/v1/user/withdraw", {
-            publicKey, recipient, amountToWithdraw, selectedToken,
-        }, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-        })
-        console.log(response.data)
-        alert(`Transaction hash:${response.data}`)
-        refetchUser();
-        setWithdrawing(false);
+        if (toAddress && Address == null) {
+            alert("Please enter ethereum address.");
+            setWithdrawing(false);
+            return;
+        }
 
+        try {
+
+            if (Address)
+                recipient = Address;
+            else {
+                recipient = address
+            }
+
+            const token = await getAccessTokenSilently();
+            console.log("inside withdraw")
+            console.log(selectedToken)
+            const response = await axios.post("http://localhost:3000/api/v1/user/withdraw", {
+                publicKey, recipient, amountToWithdraw, selectedToken,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            })
+            console.log(response.data)
+            alert(`Transaction hash: ${response.data.data.hash}`);
+            refetchUser();
+        } catch (error: any) {
+            const message = error?.response?.data?.message || "Something went wrong.";
+            alert(message);
+        }
+        finally {
+            setWithdrawing(false);
+        }
     }
 
     return <div>

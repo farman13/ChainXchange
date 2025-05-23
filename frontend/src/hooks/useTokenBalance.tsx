@@ -33,7 +33,7 @@ export const useTokenBalance = (publicKey: string) => {
                 }
             }
         )
-        setTokenBalances(response.data);
+        setTokenBalances(response.data.data);
         setLoading(false);
     }
 

@@ -14,8 +14,8 @@ const SendAsset = ({ publicKey, setIsEmailModalOpen, refetchUser, tokenBalances 
 }) => {
     const [selectedToken, setSelectedToken] = useState<TokenBalances>()
     const [selectedAmount, setSelectedAmount] = useState<string>()
-    const [amountToWithdraw, setAmountToWithdraw] = useState<string>()
-    const [withdrawing, setWithdrawing] = useState(false)
+    const [amountToSend, setAmountToWithdraw] = useState<string>()
+    const [sending, setSending] = useState(false)
     const [emailAddress, setEmailAddress] = useState<string>()
 
     const presets = ["1", "2", "5"]
@@ -29,32 +29,46 @@ const SendAsset = ({ publicKey, setIsEmailModalOpen, refetchUser, tokenBalances 
     const { getAccessTokenSilently } = useAuth0();
 
     const sendFund = async () => {
+        setSending(true);
 
-        setWithdrawing(true);
+        try {
 
-        console.log("amountToWithdraw : ", amountToWithdraw);
-        console.log(publicKey);
-        let recipient;
+            if (!amountToSend) {
+                alert("Amount must be greater than zero.");
+                setSending(false);
+                return;
+            }
 
-        if (emailAddress)
-            recipient = emailAddress;
+            if (!emailAddress) {
+                alert("Please enter an email address.");
+                setSending(false);
+                return;
+            }
 
-        const token = await getAccessTokenSilently();
-        console.log("inside withdraw")
-        console.log(selectedToken)
-        const response = await axios.post("http://localhost:3000/api/v1/user/send", {
-            publicKey, recipient, amountToWithdraw, selectedToken,
-        }, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-        })
-        console.log(response.data)
-        alert(`Transaction hash:${response.data}`)
-        refetchUser();
-        setWithdrawing(false);
+            const token = await getAccessTokenSilently();
 
-    }
+            const response = await axios.post("http://localhost:3000/api/v1/user/send", {
+                publicKey,
+                recipient: emailAddress,
+                amountToSend,
+                selectedToken,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            });
+
+            alert(`Transaction hash: ${response.data.data.hash}`);
+            refetchUser();
+        } catch (error: any) {
+            const message = error?.response?.data?.message || "Something went wrong.";
+            alert(message);
+        } finally {
+            setSending(false);
+        }
+    };
+
+
 
     return <div>
         <div className="text-md text-slate-600">
@@ -85,7 +99,7 @@ const SendAsset = ({ publicKey, setIsEmailModalOpen, refetchUser, tokenBalances 
                             let formatedAmount = (Number(e.target.value) / (selectedToken?.usdPrice ?? 0)).toFixed(18)
                             setAmountToWithdraw(String(formatedAmount))
 
-                            console.log(amountToWithdraw);
+                            console.log(amountToSend);
                         }
                         else {
                             setSelectedAmount("")
@@ -108,7 +122,7 @@ const SendAsset = ({ publicKey, setIsEmailModalOpen, refetchUser, tokenBalances 
                             setSelectedAmount(amount)
                             let formatedAmount = (Number(amount) / (selectedToken?.usdPrice ?? 0)).toFixed(18)
                             setAmountToWithdraw(String(formatedAmount))
-                            console.log(amountToWithdraw);
+                            console.log(amountToSend);
                         }}
                         className={`flex-1 pt-2 pb-2 text-sm font-medium border border-slate-300 cursor-pointer ${selectedAmount === amount
                             ? "bg-gray-300"
@@ -136,7 +150,7 @@ const SendAsset = ({ publicKey, setIsEmailModalOpen, refetchUser, tokenBalances 
                 </button>
             </div>
             <div className="mt-4">
-                <PrimaryButton onClick={sendFund} >{withdrawing ? "sending..." : "send"}</PrimaryButton>
+                <PrimaryButton onClick={sendFund} >{sending ? "sending..." : "send"}</PrimaryButton>
             </div>
         </div>
     </div>

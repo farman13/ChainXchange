@@ -17,7 +17,7 @@ const signupUser = async (req, res) => {
     const existedUser = await User.findOne({ email })
 
     if (existedUser) {
-        throw new ApiError(500, "User already exist")
+        return res.status(409).json(new ApiResponse(409, null, "User already exists"));
     }
 
     const user = await User.create({
@@ -53,8 +53,8 @@ const signupUser = async (req, res) => {
 
     SendEth(ethWallet.publicKey)
 
-    return res.status(200).json(
-        new ApiResponse(200, user.username, "User Signedup successfully")
+    res.status(201).json(
+        new ApiResponse(201, user.username, "User Signedup successfully")
     )
 }
 
@@ -65,7 +65,7 @@ const getUserWallet = async (req, res) => {
         sub
     })
     if (!user) {
-        throw new ApiError(500, "something went wrong while fetching wallet")
+        throw new ApiError(404, "something went wrong while fetching wallet")
     }
     console.log(user);
 
@@ -77,7 +77,7 @@ const getUserWallet = async (req, res) => {
 
     console.log(userWallet);
 
-    return res.status(200).json(
+    res.status(200).json(
         new ApiResponse(200, userWallet.publicKey, "sent user wallet successfully")
     )
 }
@@ -116,10 +116,10 @@ const getUserBalance = async (req, res) => {
         return acc + (parseFloat(token.balance) * token.usdPrice);
     }, 0);
 
-    res.json({
-        tokens,
-        totalUSDBalance
-    })
+    res.json(
+        new ApiResponse(200, { tokens, totalUSDBalance }, "Success")
+    );
+
 }
 
 const swapTokens = async (req, res) => {
@@ -133,9 +133,16 @@ const swapTokens = async (req, res) => {
     console.log(baseAsset, baseAmount);
     const hash = await SwapToken(baseAsset, quoteAsset, baseAmount, privateKey);
 
-    res.json({
-        hash
-    })
+    if (!hash) {
+        res.json(
+            new ApiResponse(500, null, "Failed to swap tokens")
+        )
+        throw new Error(500, "Failed to swap tokens")
+    }
+
+    res.status(200).json(
+        new ApiResponse(200, hash, "Swap tokens successfully")
+    )
 }
 
 const withdrawAsset = async (req, res) => {
@@ -167,13 +174,20 @@ const withdrawAsset = async (req, res) => {
         console.log("Transfer confirmed");
     }
 
-    res.json({
-        tx
-    })
+    if (!tx) {
+        res.status(400).json(
+            new ApiResponse(400, null, "withdraw failed")
+        )
+        throw new ApiError(400, "withdraw failed")
+    }
+
+    res.status(200).json(
+        new ApiResponse(200, tx, "withdraw successfully")
+    )
 }
 
 const sendAsset = async (req, res) => {
-    const { publicKey, recipient, amountToWithdraw, selectedToken } = req.body;
+    const { publicKey, recipient, amountToSend, selectedToken } = req.body;
 
     const userWallet = await EthWallet.findOne({ publicKey })
 
@@ -184,9 +198,9 @@ const sendAsset = async (req, res) => {
     const recipientAccount = await User.findOne({ email: recipient });
 
     if (!recipientAccount) {
-        res.json({
-            message: "Recipient address not exist"
-        })
+        return res.status(404).json(
+            new ApiResponse(404, null, "Recipient address not exist")
+        )
     }
 
     const recipientWallet = await EthWallet.findById(recipientAccount.EthWalletId)
@@ -199,14 +213,14 @@ const sendAsset = async (req, res) => {
     if (selectedToken.native) {
         tx = await wallet.sendTransaction({
             to: recipientPublicKey,
-            value: parseEther(amountToWithdraw), // amount in ETH
+            value: parseEther(amountToSend), // amount in ETH
         });
 
         console.log("Transaction hash:", tx.hash);
         await tx.wait(); // Wait for confirmation
         console.log("Transaction confirmed");
     } else {
-        const amount = parseUnits(amountToWithdraw, 18);
+        const amount = parseUnits(amountToSend, 18);
         const tokenContract = new Contract(selectedToken.address, TOKEN_IN_ABI, wallet);
         tx = await tokenContract.transfer(recipientPublicKey, amount);
         console.log("Transaction hash:", tx.hash);
@@ -214,9 +228,17 @@ const sendAsset = async (req, res) => {
         console.log("Transfer confirmed");
     }
 
-    res.json({
-        tx
-    })
+    if (!tx) {
+        res.status(400).json(
+            new ApiResponse(400, null, "Send failed")
+        )
+        throw new ApiError(400, "Send failed")
+    }
+
+    res.status(200).json(
+        new ApiResponse(200, tx, "sent successfully")
+    )
+
 }
 
 export { signupUser, getUserWallet, getUserBalance, swapTokens, withdrawAsset, sendAsset };

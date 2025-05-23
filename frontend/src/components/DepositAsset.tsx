@@ -17,7 +17,7 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
 
     const [selectedToken, setSelectedToken] = useState<TokenBalances>()
     const [selectedAmount, setSelectedAmount] = useState<string>()
-    const [amountToSend, setAmountToSend] = useState<string>()
+    const [amountToAdd, setAmountToAdd] = useState<string>()
     const [depositing, setDepositing] = useState(false)
 
     const presets = ["1", "2", "5"]
@@ -41,36 +41,49 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
             return;
         }
 
-        const [account] = await walletClient.getAddresses();
-        console.log("amountToSend : ", amountToSend);
-        console.log(publicKey);
-
-        if (selectedToken?.native) {
-            txHash = await walletClient.sendTransaction({
-                account,
-                to: publicKey as `0x${string}`,
-                value: parseEther(amountToSend || '0'),
-            });
-        } else {
-            console.log("Addr :", selectedToken?.address)
-            console.log("amount:", amountToSend)
-            txHash = await walletClient.writeContract({
-                account,
-                address: selectedToken?.address as `0x${string}`,
-                abi: tokenAbi.abi as any, // or as Abi if you have the type from viem
-                functionName: 'transfer',
-                args: [publicKey, parseEther(amountToSend || '0')],
-            });
+        if (!amountToAdd) {
+            alert("Amount must be greater than zero.");
+            setDepositing(false);
+            return;
         }
-        console.log('Transaction hash:', txHash);
-        const receipt = await publicClient.waitForTransactionReceipt({ hash: txHash });
 
-        console.log("Transaction confirmed", receipt);
-        alert(`Transaction hash:${txHash}`)
+        try {
 
-        refetchConnectedWallet();
-        refetchUser();
-        setDepositing(false);
+            const [account] = await walletClient.getAddresses();
+            console.log("amountToAdd : ", amountToAdd);
+            console.log(publicKey);
+
+            if (selectedToken?.native) {
+                txHash = await walletClient.sendTransaction({
+                    account,
+                    to: publicKey as `0x${string}`,
+                    value: parseEther(amountToAdd || '0'),
+                });
+            } else {
+                console.log("Addr :", selectedToken?.address)
+                console.log("amount:", amountToAdd)
+                txHash = await walletClient.writeContract({
+                    account,
+                    address: selectedToken?.address as `0x${string}`,
+                    abi: tokenAbi.abi as any, // or as Abi if you have the type from viem
+                    functionName: 'transfer',
+                    args: [publicKey, parseEther(amountToAdd || '0')],
+                });
+            }
+            console.log('Transaction hash:', txHash);
+            const receipt = await publicClient.waitForTransactionReceipt({ hash: txHash });
+
+            console.log("Transaction confirmed", receipt);
+            alert(`Transaction hash:${txHash}`)
+
+            refetchConnectedWallet();
+            refetchUser();
+        } catch (error: any) {
+            console.error("Deposit failed:", error);
+            alert(error?.message || "Deposit failed. Please try again.");
+        } finally {
+            setDepositing(false);
+        }
 
     }
 
@@ -100,12 +113,12 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
                         if (e.target.value) {
                             console.log("hiii")
                             setSelectedAmount(e.target.value)
-                            setAmountToSend(String(Number(e.target.value) / (selectedToken?.usdPrice ?? 0)))
-                            console.log(amountToSend);
+                            setAmountToAdd(String(Number(e.target.value) / (selectedToken?.usdPrice ?? 0)))
+                            console.log(amountToAdd);
                         }
                         else {
                             setSelectedAmount("")
-                            setAmountToSend('0');
+                            setAmountToAdd('0');
                         }
                     }}
                     className="text-2xl font-semibold text-center w-full outline-none"
@@ -122,8 +135,8 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
                         key={amount}
                         onClick={() => {
                             setSelectedAmount(amount)
-                            setAmountToSend(String(Number(amount) / (selectedToken?.usdPrice ?? 0)))
-                            console.log(amountToSend);
+                            setAmountToAdd(String(Number(amount) / (selectedToken?.usdPrice ?? 0)))
+                            console.log(amountToAdd);
                         }}
                         className={`flex-1 pt-2 pb-2 text-sm font-medium border border-slate-300 cursor-pointer ${selectedAmount === amount
                             ? "bg-gray-300"
