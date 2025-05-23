@@ -16,11 +16,11 @@ const Hero = () => {
             <div className="flex justify-center pt-4 text-2xl font-semimedium text-slate-500">
                 Create a frictionless wallet with just a Google account
             </div>
-            <div className="flex justify-center pt-2 text-xl text-slate-500">
-                Convert your INR into Cryptocurrency
+            <div className="flex justify-center pt-2 text-lg text-slate-500">
+                Send, receive, and add crypto — all in simple USD values.
             </div>
             {!isAuthenticated ?
-                <div className="pt-4 flex justify-center">
+                <div className="pt-4 mt-3 flex justify-center">
                     <SecondaryButton onClick={() => {
                         loginWithRedirect({
                             authorizationParams: {

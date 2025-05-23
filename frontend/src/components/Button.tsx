@@ -1,12 +1,16 @@
 
-export const PrimaryButton = ({ children, onClick }: {
+export const PrimaryButton = ({ children, onClick, disabled }: {
     children: React.ReactNode,
-    onClick: () => void
+    onClick: () => void,
+    disabled?: boolean
 }) => {
     return (
         <>
-            <button type="button" onClick={onClick} className="text-white bg-gray-800 border-gray-300 focus:outline-none
-             hover:bg-black focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+            <button type="button" onClick={onClick} disabled={disabled} className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2
+        ${disabled
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-gray-800 hover:bg-black cursor-pointer focus:ring-4 focus:ring-gray-100 border-gray-300 focus:outline-none"}
+      `}
             >{children}</button>
         </>
     )

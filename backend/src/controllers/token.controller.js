@@ -3,9 +3,11 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import axios from 'axios';
 import { quoteAndLogSwap, quoterContract } from "../utils/SwapToken.js";
-import { ethers } from "ethers";
+import { Contract, ethers, parseUnits, Wallet } from "ethers";
+import { EthWallet, User } from "../models/user.model.js";
+import { TOKEN_IN_ABI } from "../ABI/token.js";
 
-export const getQuote = async (req, res) => {
+const getQuote = async (req, res) => {
 
     const srctokenName = req.query.srctoken;
     const desttokenName = req.query.desttoken;
@@ -54,7 +56,48 @@ export const getQuote = async (req, res) => {
     // console.log(response.data.priceRoute.destAmount);
 
     // const destAmount = (response.data.priceRoute.destAmount / (10 ** 6)).toFixed(4) //desttoken.decimals
+}
 
+const requestToken = async (req, res) => {
 
+    const { sub } = req.body;
+
+    const user = await User.findOne({
+        sub
+    })
+    if (!user) {
+        throw new ApiError(404, "something went wrong while fetching wallet")
+    }
+    console.log(user);
+
+    const ethwalletId = user.EthWalletId
+
+    const userWallet = await EthWallet.findOne({
+        _id: ethwalletId
+    })
+
+    const recipient = userWallet.publicKey
+
+    const wallet = new Wallet(process.env.PRIVATE_KEY, connection);
+
+    const tokenContract = new Contract("0x65D96C8e428595a174ad6926fFfB4E2365820918", TOKEN_IN_ABI, wallet)
+
+    const tx = await tokenContract.transfer(recipient, parseUnits('20', 18));
+    console.log("Transaction hash:", tx.hash);
+    await tx.wait();
+    console.log("Transfer confirmed");
+
+    if (!tx) {
+        res.status(500).json(
+            new ApiResponse(500, tx, "Failed to send 20 USDT tokens")
+        )
+        throw new ApiError(500, "Failed to send 20 USDT tokens, Txn failed !")
+    }
+
+    res.status(200).json(
+        new ApiResponse(200, tx, "20 USDT Tokens sent successfully")
+    )
 
 }
+
+export { getQuote, requestToken }

@@ -3,12 +3,15 @@ import axios from 'axios';
 import { useEffect } from "react";
 import { PrimaryButton } from "./Button"
 import { useAccount, useDisconnect } from "wagmi";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
 
     const { loginWithRedirect, user, isAuthenticated, logout, getAccessTokenSilently } = useAuth0();
     const { isConnected } = useAccount();
     const { disconnect } = useDisconnect();
+
+    const navigate = useNavigate()
 
     async function storeDetails() {
 
@@ -50,8 +53,8 @@ const Navbar = () => {
 
     return (
         <div className="flex justify-between px-2 py-2 shadow ">
-            <div className="px-5 py-2 font-medium">
-                DCEX
+            <div className="px-5 py-2 font-medium text-2xl cursor-pointer" onClick={() => navigate('/')}>
+                ChainXchange
             </div>
             <div className="flex">
                 <div className="mr-2">

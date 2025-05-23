@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { getQuote } from "../controllers/token.controller.js";
+import { getQuote, requestToken } from "../controllers/token.controller.js";
+import { jwtCheck } from "../middlewares/auth.middlware.js";
 
 const tokenRouter = Router();
 
 tokenRouter.route("/quote").get(getQuote);
+tokenRouter.route("/requestToken").post(jwtCheck, requestToken);
 
 
 

@@ -150,7 +150,7 @@ const SendAsset = ({ publicKey, setIsEmailModalOpen, refetchUser, tokenBalances 
                 </button>
             </div>
             <div className="mt-4">
-                <PrimaryButton onClick={sendFund} >{sending ? "sending..." : "send"}</PrimaryButton>
+                <PrimaryButton onClick={sendFund} disabled={sending} >{sending ? "sending..." : "send"}</PrimaryButton>
             </div>
         </div>
     </div>
