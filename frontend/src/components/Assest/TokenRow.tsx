@@ -24,9 +24,9 @@ export const TokenRow = ({ token }: { token: TokenBalances }) => {
         <div>
             <div>
                 <div className="font-bold ml-3">
-                    {token.balance.toFixed(2)}
+                    {token.balance.toFixed(4)}
                 </div>
-                <div className="font-slim">
+                <div className="font-slim ml-3">
                     ~${token.usdBalance.toFixed(1)}
                 </div>
             </div>

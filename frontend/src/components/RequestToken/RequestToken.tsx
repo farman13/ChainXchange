@@ -41,7 +41,7 @@ const RequestToken = () => {
             <div className="flex justify-between">
                 <div className="ml-26">
                     <h2 className="text-2xl font-semibold mb-4 text-gray-800 mt-7">
-                        Request Test USDT Tokens after Login
+                        Request USDT Tokens after Login
                     </h2>
                     <p className="mb-6 text-gray-600">
                         Click the button to request some test USDT tokens for trying out the app.
