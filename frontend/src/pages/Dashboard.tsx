@@ -23,7 +23,7 @@ export const Dashboard = () => {
     const tabs: { id: Tab, name: string }[] = [
         { id: "tokens", name: "Tokens" },
         { id: "send", name: "Send" },
-        { id: "add_funds", name: "Add funds" },
+        { id: "add_funds", name: "Add Funds" },
         { id: "withdraw", name: "Withdraw" },
         { id: "swap", name: "Swap" },
     ]
@@ -48,26 +48,26 @@ export const Dashboard = () => {
     }, [publicKey, isLoading])
 
     return (
-        <>
+        <div className="bg-slate-100 min-h-screen">
             <Navbar />
             {isLoading ?
                 <div>Loading....</div>
                 :
                 <div className="pt-8 flex justify-center">
-                    <div className="max-w-2xl bg-white rounded-2xl shadow-lg w-full p-10 border border-gray-200">
+                    <div className="max-w-xl bg-white rounded-2xl shadow-lg w-full p-10 border border-gray-200">
                         <Greeting image={user?.picture} name={user?.name} />
-                        <div className="text-slate-500 mt-4 bg-slate-100 p-3">
+                        <div className="text-slate-500 mt-4 bg-slate-100 p-4">
                             Account assets
                             <br />
 
                             <div className="flex justify-between m-2">
                                 <div className="flex">
                                     {loading ? "Loading......" :
-                                        <div className="text-5xl font-bold text-black">
+                                        <div className="text-4xl font-bold text-black">
                                             ${tokenBalances?.totalUSDBalance.toFixed(3)}
                                         </div>
                                     }
-                                    <div className="text-slate-500 text-3xl flex flex-col font-semibold justify-end pl-2">
+                                    <div className="text-slate-500 text-2xl flex flex-col font-semibold justify-end pl-1 pb-2">
                                         USD
                                     </div>
                                 </div>
@@ -81,9 +81,9 @@ export const Dashboard = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="mt-14">
+                        <div className="mt-6">
                             {
-                                tabs.map(tab => <span className="ml-4" key={tab.id}>
+                                tabs.map(tab => <span className="ml-1" key={tab.id}>
                                     <TabButton active={tab.id === selectedTab} onClick={() => {
                                         setSelectedTab(tab.id)
                                     }}>{tab.name}</TabButton>
@@ -93,7 +93,7 @@ export const Dashboard = () => {
                         <div className={`${selectedTab == "tokens" ? "visible" : "hidden"}`}>
                             <Assets tokenBalances={tokenBalances} />
                         </div>
-                        <div className={`${selectedTab == "swap" ? "visible" : "hidden"} bg-slate-100`}>
+                        <div className={`${selectedTab == "swap" ? "visible" : "hidden"}`}>
                             <SwapToken publicKey={publicKey || ""} tokenBalances={tokenBalances} loading={loading} refetch={refetch} getAccessTokenSilently={getAccessTokenSilently} />
                         </div>
                         <div className={`${selectedTab == "add_funds" ? "visible" : "hidden"}`}>
@@ -108,7 +108,7 @@ export const Dashboard = () => {
                     </div>
                 </div>
             }
-        </>
+        </div>
     )
 }
 
@@ -118,7 +118,7 @@ function Greeting({ image, name }: {
 
     console.log(name, image);
     return <div className="flex mb-10">
-        <img src={image} className="w-14 h-14 rounded-full mr-4 border-2 border-gray-300" alt="icon" />
+        <img src={image} className="w-10 h-10 rounded-full mr-4 border-2 border-gray-300" alt="icon" />
         <div className="text-xl font-semibold flex flex-col justify-center">
             Welcome back, {name}
         </div>

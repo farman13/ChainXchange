@@ -47,7 +47,7 @@ export const TabButton = ({ active, children, onClick }: {
 }) => {
     return (
         <>
-            <button type="button" onClick={onClick} className={`text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ${active ? "bg-blue-700" : "bg-blue-300"}`}
+            <button type="button" onClick={onClick} className={`hover:bg-slate-300 focus:ring-4 font-medium focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 me-1 mb-2 ${active ? "bg-blue-600 text-slate-100" : "text-blue-500 bg-slate-200"}`}
             >{children}</button >
         </>
     )

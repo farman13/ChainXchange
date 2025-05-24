@@ -7,8 +7,8 @@ function Assets({ tokenBalances }: {
 ) {
 
     return (
-        <div className="text-slate-500 mt-4">
-            <div className="mt-15 bg-slate-100 p-4">
+        <div className="text-slate-500">
+            <div className="mt-5 bg-slate-100 p-4">
                 <TokenList tokens={tokenBalances?.tokens || []} />
             </div>
         </div>

@@ -9,7 +9,7 @@ import axios from 'axios';
 import { SwapToken } from "../utils/SwapToken.js";
 import { SendEth } from "../utils/SendEth.js";
 import { TOKEN_IN_ABI } from "../ABI/token.js";
-import { parseEther, Wallet, parseUnits, Contract } from "ethers"
+import { parseEther, Wallet, parseUnits, Contract, isAddress } from "ethers"
 
 const signupUser = async (req, res) => {
     const { username, email, picture, sub } = req.body
@@ -84,6 +84,12 @@ const getUserWallet = async (req, res) => {
 
 const getUserBalance = async (req, res) => {
     const address = req.query.address;
+
+    if (!address || !isAddress(address)) {
+        return res.json(
+            new ApiResponse(400, null, "Invalid public key")
+        )
+    }
 
     const tokenUSDPrice = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=USDT,USDC,ETH', {
         headers: {

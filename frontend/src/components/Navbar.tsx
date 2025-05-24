@@ -52,8 +52,8 @@ const Navbar = () => {
     }, [isAuthenticated, user])
 
     return (
-        <div className="flex justify-between px-2 py-2 shadow ">
-            <div className="px-5 py-2 font-medium text-2xl cursor-pointer" onClick={() => navigate('/')}>
+        <div className="flex justify-between px-2 py-2">
+            <div className="px-5 py-2 font-bold text-2xl text-blue-900 cursor-pointer" onClick={() => navigate('/')}>
                 ChainXchange
             </div>
             <div className="flex">

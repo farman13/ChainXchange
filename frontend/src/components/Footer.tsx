@@ -2,7 +2,7 @@ import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-900 text-gray-300 py-8 mt-20">
+        <footer className="bg-gray-900 text-gray-300 py-4">
             <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center">
                 <p className="mb-4 sm:mb-0 text-sm">
                     &copy; {new Date().getFullYear()} ChainXchange. All rights reserved.
@@ -34,6 +34,9 @@ const Footer = () => {
                         <FaEnvelope size={24} />
                     </a>
                 </div>
+            </div>
+            <div className="mt-2 ml-5 text-sm text-slate-200">
+                Created by Farman
             </div>
         </footer>
     );

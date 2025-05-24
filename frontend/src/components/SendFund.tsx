@@ -14,7 +14,7 @@ const SendFund = ({ publicKey, tokenBalances, refetch }: {
 
 
     return <div className="m-4">
-        <div className="text-3xl text-slate-600 font-bold p-3 pt-4">
+        <div className="text-3xl text-slate-600 font-bold mb-7 pt-4">
             Send
         </div>
         {(!isEmailModalOpen && !isExternalModalOpen) ?

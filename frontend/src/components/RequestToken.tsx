@@ -37,17 +37,17 @@ const RequestToken = () => {
     };
 
     return (
-        <div className="bg-white text-center p-6">
+        <div className="bg-white text-center p-2">
             <div className="flex justify-between">
                 <div className="ml-26">
-                    <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+                    <h2 className="text-2xl font-semibold mb-4 text-gray-800 mt-7">
                         Request Test USDT Tokens after Login
                     </h2>
                     <p className="mb-6 text-gray-600">
                         Click the button to request some test USDT tokens for trying out the app.
                     </p>
                 </div>
-                <div className="mt-6 mr-22">
+                <div className="mt-7 mr-22">
                     <PrimaryButton onClick={handleRequest} disabled={loading || !isAuthenticated}>
                         {loading ? "Requesting..." : "Request USDT"}
                     </PrimaryButton>
@@ -55,7 +55,7 @@ const RequestToken = () => {
             </div>
             <div>
                 {message && (
-                    <p className="mt-4 text-sm text-green-600 font-medium">{message}</p>
+                    <p className="mb-1 text-sm text-green-600 font-medium">{message}</p>
                 )}
             </div>
         </div>
