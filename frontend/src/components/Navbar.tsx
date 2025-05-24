@@ -53,8 +53,14 @@ const Navbar = () => {
 
     return (
         <div className="flex justify-between px-2 py-2">
+
             <div className="px-5 py-2 font-bold text-2xl text-sky-900 cursor-pointer" onClick={() => navigate('/')}>
-                ChainXchange
+                <div className="flex">
+                    <div>
+                        <img src="../public/Chain-icon-Graphics-68782081-1.jpg" alt="" width="50" height="50" />
+                    </div>
+                    <div> ChainXchange</div>
+                </div>
             </div>
             <div className="flex">
                 <div className="mr-2">
