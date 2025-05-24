@@ -21,7 +21,7 @@ const Features = () => {
                             key={i}
                             className="bg-gradient-to-b from-blue-50 to-white p-6 rounded-2xl shadow-md hover:shadow-xl transition"
                         >
-                            <div className="flex items-center justify-center text-blue-600 mb-4">{f.icon}</div>
+                            <div className="flex items-center justify-center text-sky-600 mb-4">{f.icon}</div>
                             <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
                             <p className="text-gray-600">{f.desc}</p>
                         </div>

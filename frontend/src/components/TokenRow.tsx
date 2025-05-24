@@ -5,8 +5,12 @@ export const TokenRow = ({ token }: { token: TokenBalances }) => {
     console.log("IMGGGGG", token.image)
     return <div className="flex justify-between">
         <div className="flex">
-            <div>
-                <img src={token.image} className="h-10 w-10 rounded-full pr-2" />
+            <div className="w-10 h-10 mr-3">
+                <img
+                    src={token.image}
+                    alt={token.name}
+                    className="w-full h-full rounded-full object-contain"
+                />
             </div>
             <div>
                 <div className="font-bold">

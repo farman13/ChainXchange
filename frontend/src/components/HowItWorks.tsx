@@ -14,7 +14,7 @@ const HowItWorks = () => {
                             key={index}
                             className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition"
                         >
-                            <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-full bg-blue-500 text-white text-lg font-bold">
+                            <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-full bg-sky-500 text-white text-lg font-bold">
                                 {index + 1}
                             </div>
                             <p className="text-gray-700 text-lg">{step}</p>

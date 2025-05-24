@@ -9,6 +9,7 @@ import { useTokenBalance } from "../hooks/useTokenBalance";
 import { AddFund } from "../components/AddFund";
 import { WithdrawFund } from "../components/WithdrawFund";
 import { SendFund } from "../components/SendFund";
+import { Greeting } from "../components/Greeting";
 
 type Tab = "tokens" | "send" | "add_funds" | "swap" | "withdraw"
 
@@ -112,15 +113,3 @@ export const Dashboard = () => {
     )
 }
 
-function Greeting({ image, name }: {
-    image: string | undefined, name: string | undefined
-}) {
-
-    console.log(name, image);
-    return <div className="flex mb-10">
-        <img src={image} className="w-10 h-10 rounded-full mr-4 border-2 border-gray-300" alt="icon" />
-        <div className="text-xl font-semibold flex flex-col justify-center">
-            Welcome back, {name}
-        </div>
-    </div>
-}

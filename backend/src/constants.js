@@ -11,7 +11,7 @@ export const SUPPORTED_TOKENS = [
         address: '0x65D96C8e428595a174ad6926fFfB4E2365820918',
         ETHAddress: '0xdac17f958d2ee523a2206206994597c13d831ec7',  // to get the mainnet price of usdt
         decimals: 18,
-        image: "https://www.coinpass.com/media/images/MR-4735-Coinpass-.format-webp.webpquality-90.height-752.webp",
+        image: "https://cdn3d.iconscout.com/3d/premium/thumb/tether-usdt-coin-3d-icon-download-in-png-blend-fbx-gltf-file-formats--cryptocurrency-pack-science-technology-icons-6044470.png",
         native: false
     },
     {
@@ -19,7 +19,7 @@ export const SUPPORTED_TOKENS = [
         address: '0x46e75BB06dDF1DCA6A9C25AF8a1557aEe07c5616',
         ETHAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
         decimals: 18,
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbBMfDxr1PrxlKVnOBktTGlNgXSVYUT0LB7Q&s",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrmDVXsmOdAgVsCgbjR71LJ83geUNrdvjh5yL8sOIaV7H3Atn2RFr5pA0wviTVAezjJc0&usqp=CAU",
         native: false
     }
 

@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { TokenBalances, TokenBalancesWithUSD } from "../hooks/useTokenBalance"
 import { useAccount } from "wagmi"
 import { AssestSelector } from "./AssestSelector";
-import { PrimaryButton } from "./Button";
+import { BackButton, PrimaryButton } from "./Button";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -156,15 +156,10 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
         }
         <div className="flex justify-between">
             <div>
-                <button
-                    className="bg-white border border-gray-400 text-md px-6 py-2 mt-4 rounded-lg shadow hover:bg-gray-100"
-                    onClick={() => setDepositAmountModal(false)}
-                >
-                    back
-                </button>
+                <BackButton onClick={() => setDepositAmountModal(false)} >back</BackButton>
             </div>
             <div className="mt-4">
-                <PrimaryButton onClick={withdrawFund} >{withdrawing ? `${text}ing...` : text}</PrimaryButton>
+                <PrimaryButton onClick={withdrawFund} disabled={withdrawing} >{withdrawing ? `${text}ing...` : text}</PrimaryButton>
             </div>
         </div>
     </div>

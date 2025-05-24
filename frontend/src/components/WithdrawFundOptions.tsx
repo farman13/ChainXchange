@@ -39,7 +39,7 @@ const WithdrawFundOptions = ({ publicKey, setExternalAccount, tokenBalances, ref
                 </div>
             </div>
             :
-            <WithdrawAsset publicKey={publicKey} setDepositAmountModal={setIsModalOpen} refetchUser={refetch} tokenBalances={tokenBalances} toAddress={true} text={"withdraw"} />
+            <WithdrawAsset publicKey={publicKey} setDepositAmountModal={setIsModalOpen} refetchUser={refetch} tokenBalances={tokenBalances} toAddress={true} text={"Withdraw"} />
         }
     </div>
 }

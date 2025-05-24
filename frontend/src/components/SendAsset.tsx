@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import { PrimaryButton } from "./Button"
+import { BackButton, PrimaryButton } from "./Button"
 import { TokenBalances, TokenBalancesWithUSD } from "../hooks/useTokenBalance"
 import { useAuth0 } from "@auth0/auth0-react"
 import axios from "axios"
@@ -142,15 +142,10 @@ const SendAsset = ({ publicKey, setIsEmailModalOpen, refetchUser, tokenBalances 
         </div>
         <div className="flex justify-between">
             <div>
-                <button
-                    className="bg-white border border-gray-400 text-md px-6 py-2 mt-4 rounded-lg shadow hover:bg-gray-100 cursor-pointer"
-                    onClick={() => setIsEmailModalOpen(false)}
-                >
-                    back
-                </button>
+                <BackButton onClick={() => setIsEmailModalOpen(false)} >back</BackButton>
             </div>
             <div className="mt-4">
-                <PrimaryButton onClick={sendFund} disabled={sending} >{sending ? "sending..." : "send"}</PrimaryButton>
+                <PrimaryButton onClick={sendFund} disabled={sending} >{sending ? "Sending..." : "Send"}</PrimaryButton>
             </div>
         </div>
     </div>

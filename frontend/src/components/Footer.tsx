@@ -35,8 +35,8 @@ const Footer = () => {
                     </a>
                 </div>
             </div>
-            <div className="mt-2 ml-5 text-sm text-slate-200">
-                Created by Farman
+            <div className="mt-1 ml-5 text-sm text-slate-200">
+                ~ Created by Farman
             </div>
         </footer>
     );
