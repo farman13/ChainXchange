@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { TokenBalancesWithUSD } from "../hooks/useTokenBalance";
-import { WithdrawAsset } from "./WithdrawAsset";
-import { ArrowIcon } from "./ArrowIcon";
+import { TokenBalancesWithUSD } from "../../hooks/useTokenBalance";
+import { WithdrawAsset } from "../WithdrawAsset";
+import { ArrowIcon } from "../ArrowIcon";
 import { SendAsset } from "./SendAsset";
 
 const SendFund = ({ publicKey, tokenBalances, refetch }: {
@@ -23,7 +23,7 @@ const SendFund = ({ publicKey, tokenBalances, refetch }: {
                     <div className="text-xl">
                         To Email
                         <div className="text-sm text-slate-400">
-                            Asset will be sent to existing account of DCEX
+                            Asset will be sent to existing account of ChainXchange
                         </div>
                     </div>
                     <div className="p-2">

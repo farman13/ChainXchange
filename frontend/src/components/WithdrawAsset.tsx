@@ -5,6 +5,7 @@ import { AssestSelector } from "./AssestSelector";
 import { BackButton, PrimaryButton } from "./Button";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
+import { toast } from 'react-hot-toast';
 
 const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBalances, toAddress, text }: {
     publicKey: string,
@@ -36,18 +37,25 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
 
         setWithdrawing(true);
 
-        console.log("amountToWithdraw : ", amountToWithdraw);
         console.log(publicKey);
         let recipient;
 
         if (!amountToWithdraw) {
-            alert("Amount must be greater than zero.");
+            toast.error("Amount must be greater than zero.");
+            setWithdrawing(false);
+            return;
+        }
+        console.log("amountToWithdraw : ", amountToWithdraw);
+        console.log("seletoken", selectedToken?.balance);
+
+        if (!selectedToken || parseFloat(amountToWithdraw) > selectedToken.balance) {
+            toast.error("Insufficient Assets");
             setWithdrawing(false);
             return;
         }
 
         if (toAddress && Address == null) {
-            alert("Please enter ethereum address.");
+            toast.error("Please enter ethereum address.");
             setWithdrawing(false);
             return;
         }
@@ -71,11 +79,11 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
                 },
             })
             console.log(response.data)
-            alert(`Transaction hash: ${response.data.data.hash}`);
+            toast.success(`Withdraw successfully\n Transaction hash: ${response.data.data.hash}`);
             refetchUser();
         } catch (error: any) {
             const message = error?.response?.data?.message || "Something went wrong.";
-            alert(message);
+            toast.error(message);
         }
         finally {
             setWithdrawing(false);

@@ -7,7 +7,7 @@ interface WalletModalProps {
     onClose: () => void;
 }
 
-const WalletModal: React.FC<WalletModalProps> = ({ address, onClose }) => {
+const AddressModal: React.FC<WalletModalProps> = ({ address, onClose }) => {
 
     const [copied, setCopied] = useState(false);
 
@@ -78,4 +78,4 @@ const WalletModal: React.FC<WalletModalProps> = ({ address, onClose }) => {
     );
 };
 
-export default WalletModal;
+export default AddressModal;

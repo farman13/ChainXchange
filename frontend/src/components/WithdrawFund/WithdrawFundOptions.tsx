@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { ArrowIcon } from "./ArrowIcon"
-import { WithdrawAsset } from "./WithdrawAsset";
-import { TokenBalancesWithUSD } from "../hooks/useTokenBalance";
+import { ArrowIcon } from "../ArrowIcon"
+import { WithdrawAsset } from "../WithdrawAsset";
+import { TokenBalancesWithUSD } from "../../hooks/useTokenBalance";
 
 const WithdrawFundOptions = ({ publicKey, setExternalAccount, tokenBalances, refetch }: {
     publicKey: string,

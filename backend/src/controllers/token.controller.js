@@ -4,7 +4,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import axios from 'axios';
 import { quoteAndLogSwap, quoterContract } from "../utils/SwapToken.js";
 import { Contract, ethers, parseUnits, Wallet } from "ethers";
-import { EthWallet, User } from "../models/user.model.js";
+import { User } from "../models/user.model.js";
+import { EthWallet } from "../models/EthWallet.model.js";
 import { TOKEN_IN_ABI } from "../ABI/token.js";
 
 const getQuote = async (req, res) => {

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
-import { TokenBalances, TokenBalancesWithUSD } from "../hooks/useTokenBalance";
+import { TokenBalances, TokenBalancesWithUSD } from "../../hooks/useTokenBalance";
 import { SwapRow } from "./SwapRow";
 import { SwapIcon } from "./SwapIcon";
 import axios from "axios";
-import { PrimaryButton } from "./Button";
+import { PrimaryButton } from "../Button";
 import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
+import { toast } from 'react-hot-toast';
 
 const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenSilently }:
     {
@@ -49,27 +50,42 @@ const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenS
 
     const initiateSwap = async () => {
 
-        setisSwapping(true)
-        const token = await getAccessTokenSilently();
+        if (baseAmount) {
+            if (!baseAsset || parseFloat(baseAmount) >= baseAsset?.balance) {
+                toast.error("Insufficient Assets");
+                setisSwapping(false);
+                return;
+            }
+        }
 
-        const response = await axios.post("http://localhost:3000/api/v1/user/swap", {
-            baseAsset,
-            quoteAsset,
-            baseAmount,
-            publicKey
-        },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-            })
-        console.log(response.data);
-        setQuoteAmount("0");
-        setBaseAmount("");
-        setisSwapping(false);
-        alert(`tokens swapped`)
-        refetch();
+        try {
+            setisSwapping(true)
+            const token = await getAccessTokenSilently();
 
+            const response = await axios.post("http://localhost:3000/api/v1/user/swap", {
+                baseAsset,
+                quoteAsset,
+                baseAmount,
+                publicKey
+            },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                })
+            console.log(response.data);
+            setQuoteAmount("0");
+            setBaseAmount("");
+            setisSwapping(false);
+            toast.success(`Tokens Swapped successfully\nTransaction hash: ${response.data.data}`);
+            refetch();
+        } catch (error: any) {
+            const message = error?.response?.data?.message || "Swap failed.";
+            toast.error(message);
+        } finally {
+            setisSwapping(false)
+
+        }
     }
 
     return <div className="p-6">

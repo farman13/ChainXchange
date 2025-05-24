@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { ConnectWalletAccount } from "./ConnectWalletAccount"
+import { ConnectWalletAccount } from "../ConnectWalletAccount"
 import { WithdrawFundOptions } from "./WithdrawFundOptions"
-import { TokenBalancesWithUSD } from "../hooks/useTokenBalance"
-import { WithdrawAsset } from "./WithdrawAsset"
+import { TokenBalancesWithUSD } from "../../hooks/useTokenBalance"
+import { WithdrawAsset } from "../WithdrawAsset"
 
 const WithdrawFund = ({ publicKey, tokenBalances, refetch }: {
     publicKey: string,

@@ -1,9 +1,9 @@
-import { Features } from "../components/Features"
-import { Footer } from "../components/Footer"
-import { Hero } from "../components/Hero"
-import { HowItWorks } from "../components/HowItWorks"
+import { Features } from "../components/LandingComponents/Features"
+import { Footer } from "../components/LandingComponents/Footer"
+import { Hero } from "../components/LandingComponents/Hero"
+import { HowItWorks } from "../components/LandingComponents/HowItWorks"
 import { Navbar } from "../components/Navbar"
-import { RequestToken } from "../components/RequestToken"
+import { RequestToken } from "../components/RequestToken/RequestToken"
 
 const LandingPage = () => {
     return (

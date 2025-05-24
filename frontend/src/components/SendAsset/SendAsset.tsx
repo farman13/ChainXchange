@@ -1,9 +1,10 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import { BackButton, PrimaryButton } from "./Button"
-import { TokenBalances, TokenBalancesWithUSD } from "../hooks/useTokenBalance"
+import { BackButton, PrimaryButton } from "../Button"
+import { TokenBalances, TokenBalancesWithUSD } from "../../hooks/useTokenBalance"
 import { useAuth0 } from "@auth0/auth0-react"
 import axios from "axios"
-import { AssestSelector } from "./AssestSelector"
+import { AssestSelector } from "../AssestSelector"
+import { toast } from "react-hot-toast"
 
 const SendAsset = ({ publicKey, setIsEmailModalOpen, refetchUser, tokenBalances }: {
     publicKey: string,
@@ -34,13 +35,20 @@ const SendAsset = ({ publicKey, setIsEmailModalOpen, refetchUser, tokenBalances 
         try {
 
             if (!amountToSend) {
-                alert("Amount must be greater than zero.");
+                toast.error("Amount must be greater than zero.");
+                setSending(false);
+                return;
+            }
+
+            console.log(selectedToken?.balance);
+            if (!selectedToken || parseFloat(amountToSend) > selectedToken?.balance) {
+                toast.error("Insufficient funds");
                 setSending(false);
                 return;
             }
 
             if (!emailAddress) {
-                alert("Please enter an email address.");
+                toast.error("Please enter an email address.");
                 setSending(false);
                 return;
             }
@@ -58,11 +66,11 @@ const SendAsset = ({ publicKey, setIsEmailModalOpen, refetchUser, tokenBalances 
                 },
             });
 
-            alert(`Transaction hash: ${response.data.data.hash}`);
+            toast.success(`Sent successfully\nTransaction hash: ${response.data.data.hash}`);
             refetchUser();
         } catch (error: any) {
             const message = error?.response?.data?.message || "Something went wrong.";
-            alert(message);
+            toast.error(message);
         } finally {
             setSending(false);
         }

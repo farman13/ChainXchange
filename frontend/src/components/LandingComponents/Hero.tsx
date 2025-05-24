@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { SecondaryButton } from "./Button";
+import { SecondaryButton } from "../Button";
 import { useNavigate } from "react-router-dom";
 
 const Hero = () => {

@@ -1,4 +1,4 @@
-import { TokenBalancesWithUSD } from "../hooks/useTokenBalance";
+import { TokenBalancesWithUSD } from "../../hooks/useTokenBalance";
 import { TokenList } from "./TokenList";
 
 function Assets({ tokenBalances }: {

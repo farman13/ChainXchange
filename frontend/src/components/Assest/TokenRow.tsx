@@ -1,4 +1,4 @@
-import { TokenBalances } from "../hooks/useTokenBalance";
+import { TokenBalances } from "../../hooks/useTokenBalance";
 
 export const TokenRow = ({ token }: { token: TokenBalances }) => {
 

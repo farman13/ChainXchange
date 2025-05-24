@@ -1,4 +1,5 @@
-import { EthWallet, InrWallet, User } from "../models/user.model.js";
+import { User } from "../models/user.model.js";
+import { EthWallet } from "../models/EthWallet.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { connection, SUPPORTED_TOKENS } from "../constants.js";
@@ -36,14 +37,9 @@ const signupUser = async (req, res) => {
         iv: encryptedKey.iv
     })
 
-    const inrWallet = await InrWallet.create({
-        balance: 0,
-        userId: user._id
-    })
 
     await User.findByIdAndUpdate(user._id, {
         EthWalletId: ethwallet._id,
-        InrWalletId: inrWallet._id
     })
 
 
@@ -140,10 +136,9 @@ const swapTokens = async (req, res) => {
     const hash = await SwapToken(baseAsset, quoteAsset, baseAmount, privateKey);
 
     if (!hash) {
-        res.json(
+        res.status(500).json(
             new ApiResponse(500, null, "Failed to swap tokens")
         )
-        throw new Error(500, "Failed to swap tokens")
     }
 
     res.status(200).json(
@@ -184,7 +179,6 @@ const withdrawAsset = async (req, res) => {
         res.status(400).json(
             new ApiResponse(400, null, "withdraw failed")
         )
-        throw new ApiError(400, "withdraw failed")
     }
 
     res.status(200).json(
@@ -238,7 +232,6 @@ const sendAsset = async (req, res) => {
         res.status(400).json(
             new ApiResponse(400, null, "Send failed")
         )
-        throw new ApiError(400, "Send failed")
     }
 
     res.status(200).json(

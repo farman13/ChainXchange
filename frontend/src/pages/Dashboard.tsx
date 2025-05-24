@@ -1,14 +1,14 @@
 import { useAuth0 } from "@auth0/auth0-react"
 import { Navbar } from "../components/Navbar"
-import { Assets } from "../components/Assets";
+import { Assets } from "../components/Assest/Assets";
 import { useGetUserWallet } from "../hooks/useGetUserWallet";
 import { TabButton, TertiaryButton } from "../components/Button";
 import { useEffect, useState } from "react";
-import { SwapToken } from "../components/SwapToken";
+import { SwapToken } from "../components/SwapToken/SwapToken";
 import { useTokenBalance } from "../hooks/useTokenBalance";
-import { AddFund } from "../components/AddFund";
-import { WithdrawFund } from "../components/WithdrawFund";
-import { SendFund } from "../components/SendFund";
+import { AddFund } from "../components/AddFund/AddFund";
+import { WithdrawFund } from "../components/WithdrawFund/WithdrawFund";
+import { SendFund } from "../components/SendAsset/SendFund";
 import { Greeting } from "../components/Greeting";
 
 type Tab = "tokens" | "send" | "add_funds" | "swap" | "withdraw"
@@ -94,8 +94,8 @@ export const Dashboard = () => {
                         <div className={`${selectedTab == "tokens" ? "visible" : "hidden"}`}>
                             <Assets tokenBalances={tokenBalances} />
                         </div>
-                        <div className={`${selectedTab == "swap" ? "visible" : "hidden"}`}>
-                            <SwapToken publicKey={publicKey || ""} tokenBalances={tokenBalances} loading={loading} refetch={refetch} getAccessTokenSilently={getAccessTokenSilently} />
+                        <div className={`${selectedTab == "send" ? "visible" : "hidden"}`}>
+                            <SendFund publicKey={publicKey || ""} tokenBalances={tokenBalances} refetch={refetch} />
                         </div>
                         <div className={`${selectedTab == "add_funds" ? "visible" : "hidden"}`}>
                             <AddFund publicKey={publicKey || ""} refetchUser={refetch} />
@@ -103,8 +103,8 @@ export const Dashboard = () => {
                         <div className={`${selectedTab == "withdraw" ? "visible" : "hidden"}`}>
                             <WithdrawFund publicKey={publicKey || ""} tokenBalances={tokenBalances} refetch={refetch} />
                         </div>
-                        <div className={`${selectedTab == "send" ? "visible" : "hidden"}`}>
-                            <SendFund publicKey={publicKey || ""} tokenBalances={tokenBalances} refetch={refetch} />
+                        <div className={`${selectedTab == "swap" ? "visible" : "hidden"}`}>
+                            <SwapToken publicKey={publicKey || ""} tokenBalances={tokenBalances} loading={loading} refetch={refetch} getAccessTokenSilently={getAccessTokenSilently} />
                         </div>
                     </div>
                 </div>

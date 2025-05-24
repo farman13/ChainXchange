@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { AddFundOptions } from "./AddFundOptions";
-import { ConnectWalletAccount } from "./ConnectWalletAccount";
+import { ConnectWalletAccount } from "../ConnectWalletAccount";
 import { DepositAsset } from "./DepositAsset";
-import { useTokenBalance } from "../hooks/useTokenBalance";
+import { useTokenBalance } from "../../hooks/useTokenBalance";
 import { useAccount } from "wagmi";
 
 const AddFund = ({ publicKey, refetchUser }: {

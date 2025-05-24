@@ -1,10 +1,11 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { AssestSelector } from "./AssestSelector";
-import { TokenBalances, TokenBalancesWithUSD } from "../hooks/useTokenBalance";
-import { BackButton, PrimaryButton } from "./Button";
+import { AssestSelector } from "../AssestSelector";
+import { TokenBalances, TokenBalancesWithUSD } from "../../hooks/useTokenBalance";
+import { BackButton, PrimaryButton } from "../Button";
 import { usePublicClient, useWalletClient } from "wagmi";
 import { parseEther } from "viem";
-import tokenAbi from "../Abi/tokenAbi.json";
+import tokenAbi from "../../Abi/tokenAbi.json";
+import { toast } from "react-hot-toast";
 
 const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchConnectedWallet, tokenBalances }: {
     publicKey: string,
@@ -42,10 +43,17 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
         }
 
         if (!amountToAdd) {
-            alert("Amount must be greater than zero.");
+            toast.error("Amount must be greater than zero.");
             setDepositing(false);
             return;
         }
+
+        if (!selectedToken || parseFloat(amountToAdd) > selectedToken?.balance) {
+            toast.error("Insufficient funds");
+            setDepositing(false);
+            return;
+        }
+
 
         try {
 
@@ -74,13 +82,13 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
             const receipt = await publicClient.waitForTransactionReceipt({ hash: txHash });
 
             console.log("Transaction confirmed", receipt);
-            alert(`Transaction hash:${txHash}`)
+            toast.success(`Funds Added\nTransaction hash:${txHash}`)
 
             refetchConnectedWallet();
             refetchUser();
         } catch (error: any) {
             console.error("Deposit failed:", error);
-            alert(error?.message || "Deposit failed. Please try again.");
+            toast.error(error?.message || "Deposit failed. Please try again.");
         } finally {
             setDepositing(false);
         }

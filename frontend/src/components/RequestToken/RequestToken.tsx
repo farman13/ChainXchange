@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PrimaryButton } from "./Button";
+import { PrimaryButton } from "../Button";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -10,7 +10,7 @@ const RequestToken = () => {
     const { user, getAccessTokenSilently, isAuthenticated } = useAuth0();
     // Simulate a request call (replace with your API or smart contract call)
     const handleRequest = async () => {
-        console.log("insdie handle request")
+        console.log("inside handle request")
         setLoading(true);
         setMessage("");
 

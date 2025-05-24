@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { ArrowIcon } from "./ArrowIcon"
-import WalletModal from "./WalletModal";
+import { ArrowIcon } from "../ArrowIcon"
+import AddressModal from "../AddressModal";
 
 const AddFundOptions = ({ publicKey, setExternalAccount }: {
     publicKey: string,
@@ -32,7 +32,7 @@ const AddFundOptions = ({ publicKey, setExternalAccount }: {
             </div>
         </div>
         {isModalOpen && (
-            <WalletModal address={publicKey}
+            <AddressModal address={publicKey}
                 onClose={() => setIsModalOpen(false)} />
         )}
     </div>

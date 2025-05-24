@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
-import { TokenBalances } from "../hooks/useTokenBalance"
-import { AssestSelector } from "./AssestSelector"
-import { useDebounce } from "../hooks/useDebounce"
+import { TokenBalances } from "../../hooks/useTokenBalance"
+import { AssestSelector } from "../AssestSelector"
+import { useDebounce } from "../../hooks/useDebounce"
 
 const SwapRow = ({ onSelect, selectedToken, allTokens, title, subtitle, topBorderEnabled, bottomBorderEnabled, amount, onChangeAmount, inputDisable }:
     {
