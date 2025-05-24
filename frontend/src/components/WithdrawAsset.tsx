@@ -71,7 +71,7 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
             const token = await getAccessTokenSilently();
             console.log("inside withdraw")
             console.log(selectedToken)
-            const response = await axios.post("http://localhost:3000/api/v1/user/withdraw", {
+            const response = await axios.post("https://chain-xchange.vercel.app/api/v1/user/withdraw", {
                 publicKey, recipient, amountToWithdraw, selectedToken,
             }, {
                 headers: {

@@ -26,7 +26,7 @@ export const useTokenBalance = (publicKey: string) => {
     const fetchToken = async () => {
 
         const token = await getAccessTokenSilently();
-        const response = await axios.get(`http://localhost:3000/api/v1/user/balance?address=${publicKey}`,
+        const response = await axios.get(`https://chain-xchange.vercel.app/api/v1/user/balance?address=${publicKey}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`

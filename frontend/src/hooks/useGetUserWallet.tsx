@@ -19,7 +19,7 @@ export const useGetUserWallet = () => {
             return null;
         }
         try {
-            const response = await axios.post("http://localhost:3000/api/v1/user/getwallet", {
+            const response = await axios.post("https://chain-xchange.vercel.app/api/v1/user/getwallet", {
                 sub
             },
                 {

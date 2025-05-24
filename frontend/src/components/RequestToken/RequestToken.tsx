@@ -18,7 +18,7 @@ const RequestToken = () => {
         const token = await getAccessTokenSilently();
 
         try {
-            const response = await axios.post("http://localhost:3000/api/v1/token/requestToken", {
+            const response = await axios.post("https://chain-xchange.vercel.app/api/v1/token/requestToken", {
                 sub
             },
                 {
