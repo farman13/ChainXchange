@@ -4,6 +4,9 @@ import { useEffect } from "react";
 import { PrimaryButton } from "./Button"
 import { useAccount, useDisconnect } from "wagmi";
 import { useNavigate } from "react-router-dom";
+import chainIcon from '../assets/Chain-icon-Graphics-68782081-1.jpg';
+
+
 
 const Navbar = () => {
 
@@ -57,7 +60,7 @@ const Navbar = () => {
             <div className="px-5 py-2 font-bold text-2xl text-sky-900 cursor-pointer" onClick={() => navigate('/')}>
                 <div className="flex">
                     <div>
-                        <img src="../public/Chain-icon-Graphics-68782081-1.jpg" alt="" width="50" height="50" />
+                        <img src={chainIcon} alt="Chain Icon" height={50} width={50} />
                     </div>
                     <div> ChainXchange</div>
                 </div>

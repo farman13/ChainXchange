@@ -48,7 +48,7 @@ const RequestToken = () => {
                     </p>
                 </div>
                 <div className="mt-7 mr-22">
-                    <PrimaryButton onClick={handleRequest} disabled={loading || !isAuthenticated}>
+                    <PrimaryButton onClick={handleRequest} disabled={loading && !isAuthenticated}>
                         {loading ? "Requesting..." : "Request USDT"}
                     </PrimaryButton>
                 </div>
