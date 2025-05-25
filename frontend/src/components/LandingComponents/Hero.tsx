@@ -10,7 +10,7 @@ const Hero = () => {
     return (
         <div>
             <div className="text-5xl font-medium pt-15 flex justify-center">
-                <span>The Indian Cryptocurrency</span>
+                <span>The Next Cryptocurrency</span>
                 <span className="text-sky-700 pl-2">Revolution</span>
             </div>
             <div className="flex justify-center pt-4 text-2xl font-semimedium text-slate-500">
