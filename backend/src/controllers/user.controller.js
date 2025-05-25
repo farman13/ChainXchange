@@ -26,9 +26,9 @@ const signupUser = async (req, res) => {
     })
 
     const ethWallet = generateEthWallet();
-    console.log("ethwallet : ", ethWallet);
+    // console.log("ethwallet : ", ethWallet);
     const encryptedKey = encrypt(ethWallet.privateKey);
-    console.log("Encrypted key :", encryptedKey);
+    //  console.log("Encrypted key :", encryptedKey);
 
     const ethwallet = await EthWallet.create({
         publicKey: ethWallet.publicKey,
