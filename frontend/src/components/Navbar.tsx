@@ -5,7 +5,7 @@ import { PrimaryButton } from "./Button"
 import { useAccount, useDisconnect } from "wagmi";
 import { useNavigate } from "react-router-dom";
 import chainIcon from '../assets/Chain-icon-Graphics-68782081-1.jpg';
-
+import { FcGoogle } from 'react-icons/fc';
 
 
 const Navbar = () => {
@@ -81,7 +81,7 @@ const Navbar = () => {
                             authorizationParams: {
                                 connection: 'google-oauth2'
                             }
-                        })}>Log In</PrimaryButton> :
+                        })}><FcGoogle className="text-xl" />Log In</PrimaryButton> :
                         <PrimaryButton onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Log out</PrimaryButton>
                     }
                 </div>
