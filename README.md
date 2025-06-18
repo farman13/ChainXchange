@@ -1,11 +1,12 @@
-# ChainXchange
+# ChainXchange 
+
+🔗 Live Project - https://chainxchange.vercel.app/
 
 **The Next Cryptocurrency Revolution**
 
 Create your frictionless wallet with just a Google account.  
 Send, receive, and add crypto — all in simple USD values.
 
-🔗 Live Project - https://chainxchange.vercel.app/
 
 ---
 
