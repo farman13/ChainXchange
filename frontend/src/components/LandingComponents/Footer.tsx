@@ -18,7 +18,7 @@ const Footer = () => {
                         <FaLinkedin size={24} />
                     </a>
                     <a
-                        href="https://github.com/farman13"
+                        href="https://github.com/farman13/ChainXchange"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-white transition"
