@@ -44,8 +44,8 @@ export const Dashboard = () => {
     }, [copied])
 
     useEffect(() => {
+        refetchWallet();         //  swaped the fucntion calls 
         refetch();
-        refetchWallet();
     }, [publicKey, isLoading])
 
     return (

@@ -2,14 +2,20 @@ import { useState } from "react";
 import { PrimaryButton } from "../Button";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
+import { toast } from "react-hot-toast"
 
 const RequestToken = () => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
     const { user, getAccessTokenSilently, isAuthenticated } = useAuth0();
-    // Simulate a request call (replace with your API or smart contract call)
+
     const handleRequest = async () => {
+
+        if (!isAuthenticated) {
+            toast.error("You are not logged In ! ");
+            return
+        }
         console.log("inside handle request")
         setLoading(true);
         setMessage("");
@@ -48,7 +54,7 @@ const RequestToken = () => {
                     </p>
                 </div>
                 <div className="mt-7 mr-22">
-                    <PrimaryButton onClick={handleRequest} disabled={loading && !isAuthenticated}>
+                    <PrimaryButton onClick={handleRequest} disabled={loading}>
                         {loading ? "Requesting..." : "Request USDT"}
                     </PrimaryButton>
                 </div>
