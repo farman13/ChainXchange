@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { SecondaryButton } from "../Button";
 import { useNavigate } from "react-router-dom";
+import { FcGoogle } from 'react-icons/fc';
 
 const Hero = () => {
 
@@ -27,7 +28,7 @@ const Hero = () => {
                                 connection: 'google-oauth2'
                             }
                         });
-                    }}>Login with Google</SecondaryButton>
+                    }}><FcGoogle className="text-xl" />Login with Google</SecondaryButton>
                 </div> :
                 <div className="pt-4 flex justify-center">
                     <SecondaryButton onClick={() => navigate('/dashboard')}>Dashboard</SecondaryButton>
