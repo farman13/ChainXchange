@@ -47,7 +47,14 @@ Send, receive, and add crypto — all in simple USD values.
 
 ---
 
-## 🛠️ How to Run
+
+## 📦 Installation
+
+ **Clone the repository**
+   ```bash
+   git clone https://github.com/farman/ChainXchange.git
+   cd chatapp
+   ```
 
 ### Frontend
 
