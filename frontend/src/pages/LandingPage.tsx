@@ -7,14 +7,14 @@ import { RequestToken } from "../components/RequestToken/RequestToken"
 
 const LandingPage = () => {
     return (
-        <>
+        <div className="bg-slate-50">
             <Navbar />
             <Hero />
             <Features />
             <HowItWorks />
             <RequestToken />
             <Footer />
-        </>
+        </div>
     )
 }
 

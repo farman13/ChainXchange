@@ -36,7 +36,7 @@ const Footer = () => {
                 </div>
             </div>
             <div className="mt-1 ml-5 text-sm text-slate-200">
-                ~ Created by Farman
+                ~ Developed by Farman
             </div>
         </footer>
     );

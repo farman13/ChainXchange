@@ -68,7 +68,7 @@ export const Dashboard = () => {
                                             ${tokenBalances?.totalUSDBalance.toFixed(3)}
                                         </div>
                                     }
-                                    <div className="text-slate-500 text-2xl flex flex-col font-semibold justify-end pl-1 pb-2">
+                                    <div className="text-slate-500 text-2xl flex flex-col font-semibold justify-end pl-1">
                                         USD
                                     </div>
                                 </div>

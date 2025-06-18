@@ -1,8 +1,8 @@
 const HowItWorks = () => {
     return (
-        <div className="py-20 bg-gradient-to-b from-white to-blue-50">
+        <div className="py-4 bg-gradient-to-b mb-15">
             <div className="max-w-5xl mx-auto px-4 text-center">
-                <h2 className="text-4xl font-bold text-gray-800 mb-16">How It Works</h2>
+                <h2 className="text-4xl font-bold text-gray-800 mb-16">How It Works ?</h2>
                 <div className="grid md:grid-cols-4 gap-10">
                     {[
                         "Login with Google",

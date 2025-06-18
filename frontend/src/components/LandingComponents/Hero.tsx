@@ -2,6 +2,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { SecondaryButton } from "../Button";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from 'react-icons/fc';
+import wallet from '../../assets/wallet.png';
+
 
 const Hero = () => {
 
@@ -34,6 +36,13 @@ const Hero = () => {
                     <SecondaryButton onClick={() => navigate('/dashboard')}>Dashboard</SecondaryButton>
                 </div>
             }
+            <div className="flex justify-center items-center bg-[url('/bg-blue.jpg')] bg-cover ml-50 mr-50 mt-15 pb-10 pt-4 rounded-2xl shadow-2xl shadow-slate-300">
+                <img
+                    src={wallet}
+                    alt="Centered Screenshot"
+                    className="rounded-lg shadow-xl w-[500px] h-auto mt-6"
+                />
+            </div>
         </div >
     )
 }
