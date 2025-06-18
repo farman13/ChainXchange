@@ -9,7 +9,6 @@ Send, receive, and add crypto — all in simple USD values.
 
 ---
 
-## 📸 Screenshot
 
 ![ChainXchange Screenshot](./screenshot.png)
 
