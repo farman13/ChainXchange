@@ -32,7 +32,7 @@ const Navbar = () => {
             // console.log(username, email);
             // console.log("token", token);
 
-            const response = await axios.post('https://chain-xchange.vercel.app/api/v1/user/signup',
+            await axios.post('https://chain-xchange.vercel.app/api/v1/user/signup',
                 {
                     username,
                     email,
