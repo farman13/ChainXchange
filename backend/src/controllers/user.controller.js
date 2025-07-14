@@ -13,13 +13,12 @@ import { TOKEN_IN_ABI } from "../ABI/token.js";
 import { parseEther, Wallet, parseUnits, Contract, isAddress } from "ethers"
 
 const signupUser = async (req, res) => {
-    console.log("Start")
     const { username, email, picture, sub } = req.body
 
     const existedUser = await User.findOne({ email })
 
     if (existedUser) {
-        return res.status(409).json(new ApiResponse(409, null, "User already exists"));
+        return res.status(200).json(new ApiResponse(200, null, "User already exists"));
     }
 
     const user = await User.create({
