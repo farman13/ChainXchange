@@ -47,7 +47,7 @@ const signupUser = async (req, res) => {
         throw new ApiError(500, "somethong went wrong while registering user");
     }
 
-    SendEth(ethWallet.publicKey)
+    await SendEth(ethWallet.publicKey)
 
     res.status(201).json(
         new ApiResponse(201, user.username, "User Signedup successfully")
