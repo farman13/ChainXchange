@@ -81,7 +81,7 @@ const requestToken = async (req, res) => {
 
     const wallet = new Wallet(process.env.PRIVATE_KEY, connection);
 
-    const tokenContract = new Contract("0x65D96C8e428595a174ad6926fFfB4E2365820918", TOKEN_IN_ABI, wallet)
+    const tokenContract = new Contract("0xC4CF91056A704445341A3BEB7966ab91b0a1b09D", TOKEN_IN_ABI, wallet)
 
     const tx = await tokenContract.transfer(recipient, parseUnits('20', 18));
     console.log("Transaction hash:", tx.hash);
