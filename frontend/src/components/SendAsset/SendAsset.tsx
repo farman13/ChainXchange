@@ -25,7 +25,7 @@ const SendAsset = ({ publicKey, setIsEmailModalOpen, refetchUser, tokenBalances 
         setSelectedToken(tokenBalances?.tokens[0]);
     }, [tokenBalances])
 
-    console.log("tokenbalances", tokenBalances);
+    // console.log("tokenbalances", tokenBalances);
 
     const { getAccessTokenSilently } = useAuth0();
 
@@ -40,7 +40,7 @@ const SendAsset = ({ publicKey, setIsEmailModalOpen, refetchUser, tokenBalances 
                 return;
             }
 
-            console.log(selectedToken?.balance);
+            // console.log(selectedToken?.balance);
             if (!selectedToken || parseFloat(amountToSend) > selectedToken?.balance) {
                 toast.error("Insufficient funds");
                 setSending(false);

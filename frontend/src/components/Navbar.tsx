@@ -27,10 +27,10 @@ const Navbar = () => {
             const email = user?.email;
             const picture = user?.picture;
             const sub = user?.sub;
-            console.log("token", token)
-            console.log("User : ", user);
-            console.log(username, email);
-            console.log("token", token);
+            // console.log("token", token)
+            // console.log("User : ", user);
+            // console.log(username, email);
+            // console.log("token", token);
 
             const response = await axios.post('https://chain-xchange.vercel.app/api/v1/user/signup',
                 {
@@ -43,7 +43,7 @@ const Navbar = () => {
                     Authorization: `Bearer ${token}`
                 },
             })
-            console.log(response.data);
+            // console.log(response.data);
         } catch (e) {
             console.log("error while signUp :", e)
         }

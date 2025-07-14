@@ -27,7 +27,7 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
         setSelectedToken(tokenBalances?.tokens[0]);
     }, [tokenBalances])
 
-    console.log("tokenbalances", tokenBalances);
+    // console.log("tokenbalances", tokenBalances);
 
     const { data: walletClient } = useWalletClient();
     const publicClient = usePublicClient()
@@ -58,8 +58,8 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
         try {
 
             const [account] = await walletClient.getAddresses();
-            console.log("amountToAdd : ", amountToAdd);
-            console.log(publicKey);
+            // console.log("amountToAdd : ", amountToAdd);
+            // console.log(publicKey);
 
             if (selectedToken?.native) {
                 txHash = await walletClient.sendTransaction({
@@ -78,7 +78,7 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
                     args: [publicKey, parseEther(amountToAdd || '0')],
                 });
             }
-            console.log('Transaction hash:', txHash);
+            // console.log('Transaction hash:', txHash);
             const receipt = await publicClient.waitForTransactionReceipt({ hash: txHash });
 
             console.log("Transaction confirmed", receipt);
@@ -87,7 +87,7 @@ const DepositAsset = ({ publicKey, setDepositAmountModal, refetchUser, refetchCo
             refetchConnectedWallet();
             refetchUser();
         } catch (error: any) {
-            console.error("Deposit failed:", error);
+            // console.error("Deposit failed:", error);
             toast.error(error?.message || "Deposit failed. Please try again.");
         } finally {
             setDepositing(false);

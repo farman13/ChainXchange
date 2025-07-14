@@ -30,7 +30,7 @@ export const Dashboard = () => {
     ]
 
     const [copied, setCopied] = useState(false);
-    console.log("AASSSPub", publicKey)
+    // console.log("AASSSPub", publicKey)
 
     useEffect(() => {
         if (copied) {

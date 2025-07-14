@@ -16,7 +16,7 @@ const RequestToken = () => {
             toast.error("You are not logged In ! ");
             return
         }
-        console.log("inside handle request")
+        // console.log("inside handle request")
         setLoading(true);
         setMessage("");
 
@@ -34,7 +34,7 @@ const RequestToken = () => {
 
                 })
 
-            console.log(response.data.data.tx)
+            // console.log(response.data.data.tx)
             setMessage("20 USDT tokens sent successfully!");
         } catch (err) {
             setMessage("Failed to request tokens. Please try again after login.");

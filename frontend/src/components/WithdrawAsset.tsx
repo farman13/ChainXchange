@@ -28,7 +28,7 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
         setSelectedToken(tokenBalances?.tokens[0]);
     }, [tokenBalances])
 
-    console.log("tokenbalances", tokenBalances);
+    // console.log("tokenbalances", tokenBalances);
 
     const { address } = useAccount();
     const { getAccessTokenSilently } = useAuth0();
@@ -37,7 +37,7 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
 
         setWithdrawing(true);
 
-        console.log(publicKey);
+        // console.log(publicKey);
         let recipient;
 
         if (!amountToWithdraw) {
@@ -45,8 +45,8 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
             setWithdrawing(false);
             return;
         }
-        console.log("amountToWithdraw : ", amountToWithdraw);
-        console.log("seletoken", selectedToken?.balance);
+        // console.log("amountToWithdraw : ", amountToWithdraw);
+        // console.log("seletoken", selectedToken?.balance);
 
         if (!selectedToken || parseFloat(amountToWithdraw) > selectedToken.balance) {
             toast.error("Insufficient Assets");
@@ -69,8 +69,8 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
             }
 
             const token = await getAccessTokenSilently();
-            console.log("inside withdraw")
-            console.log(selectedToken)
+            // console.log("inside withdraw")
+            // console.log(selectedToken)
             const response = await axios.post("https://chain-xchange.vercel.app/api/v1/user/withdraw", {
                 publicKey, recipient, amountToWithdraw, selectedToken,
             }, {
@@ -78,7 +78,7 @@ const WithdrawAsset = ({ publicKey, setDepositAmountModal, refetchUser, tokenBal
                     Authorization: `Bearer ${token}`
                 },
             })
-            console.log(response.data)
+            // console.log(response.data)
             toast.success(`Withdraw successfully\n Transaction hash: ${response.data.data.hash}`);
             refetchUser();
         } catch (error: any) {

@@ -12,8 +12,8 @@ export const useGetUserWallet = () => {
 
         const sub = user?.sub;
         const token = await getAccessTokenSilently();
-        console.log("sub", sub);
-        console.log("token", token);
+        // console.log("sub", sub);
+        // console.log("token", token);
 
         if (!sub) {
             return null;
@@ -28,7 +28,7 @@ export const useGetUserWallet = () => {
                     },
 
                 })
-            console.log(response.data);
+            // console.log(response.data);
             setPublicKey(response.data.data);
         } catch (e) {
             console.log("Error while fetching wallet", e);

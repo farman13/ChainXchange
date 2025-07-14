@@ -34,8 +34,8 @@ const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenS
             setQuoteAmount("0");
             return;
         }
-        console.log(typeof (baseAmount))
-        console.log(baseAmount)
+        // console.log(typeof (baseAmount))
+        // console.log(baseAmount)
 
         const fetchQuote = async () => {
             const response = await axios.get(`https://chain-xchange.vercel.app/api/v1/token/quote?srctoken=${baseAsset?.name}&desttoken=${quoteAsset?.name}&amount=${baseAmount}&publicKey=${publicKey}`)
@@ -46,7 +46,7 @@ const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenS
 
     }, [baseAmount, baseAsset, quoteAsset])
 
-    console.log("from swaptoken : token", tokenBalances);
+    // console.log("from swaptoken : token", tokenBalances);
 
     const initiateSwap = async () => {
 
@@ -73,7 +73,7 @@ const SwapToken = ({ publicKey, tokenBalances, loading, refetch, getAccessTokenS
                         Authorization: `Bearer ${token}`
                     },
                 })
-            console.log(response.data);
+            // console.log(response.data);
             setQuoteAmount("0");
             setBaseAmount("");
             setisSwapping(false);
